@@ -1,0 +1,259 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lato:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 33% 98%;
+    --foreground: 30 10% 15%;
+
+    --card: 40 30% 97%;
+    --card-foreground: 30 10% 15%;
+
+    --popover: 40 30% 97%;
+    --popover-foreground: 30 10% 15%;
+
+    --primary: 145 35% 28%;
+    --primary-foreground: 40 33% 98%;
+
+    --secondary: 33 80% 55%;
+    --secondary-foreground: 40 33% 98%;
+
+    --muted: 40 20% 93%;
+    --muted-foreground: 30 8% 45%;
+
+    --accent: 33 80% 55%;
+    --accent-foreground: 40 33% 98%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 35 20% 88%;
+    --input: 35 20% 88%;
+    --ring: 145 35% 28%;
+
+    --radius: 0.75rem;
+
+    --safari-dark: 30 15% 12%;
+    --safari-warm: 33 60% 50%;
+    --safari-gold: 42 85% 55%;
+    --safari-cream: 40 40% 95%;
+    --safari-green: 145 35% 28%;
+    --safari-green-light: 145 25% 40%;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 30 15% 8%;
+    --foreground: 40 33% 95%;
+    --card: 30 15% 12%;
+    --card-foreground: 40 33% 95%;
+    --popover: 30 15% 12%;
+    --popover-foreground: 40 33% 95%;
+    --primary: 145 35% 40%;
+    --primary-foreground: 40 33% 98%;
+    --secondary: 33 80% 55%;
+    --secondary-foreground: 40 33% 98%;
+    --muted: 30 10% 18%;
+    --muted-foreground: 35 15% 60%;
+    --accent: 33 80% 55%;
+    --accent-foreground: 40 33% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 30 10% 20%;
+    --input: 30 10% 20%;
+    --ring: 145 35% 40%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+    background-image: url('./assets/big5-pattern.png');
+    background-size: 400px;
+    background-repeat: repeat;
+    background-blend-mode: soft-light;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}
+
+@layer utilities {
+  .text-gradient-gold {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(var(--safari-gold)), hsl(var(--safari-warm)));
+  }
+
+  .bg-safari-dark {
+    background-color: hsl(var(--safari-dark));
+  }
+
+  .bg-safari-cream {
+    background-color: hsl(var(--safari-cream));
+  }
+
+  .text-safari-gold {
+    color: hsl(var(--safari-gold));
+  }
+
+  .text-safari-warm {
+    color: hsl(var(--safari-warm));
+  }
+
+  .bg-safari-green {
+    background-color: hsl(var(--safari-green));
+  }
+
+  .hero-overlay {
+    background: linear-gradient(to bottom, hsla(30, 15%, 8%, 0.4), hsla(30, 15%, 8%, 0.7));
+  }
+
+  /* Safari Drive Animated Background */
+  .safari-drive-bg {
+    background: linear-gradient(
+      180deg,
+      hsl(var(--safari-cream)) 0%,
+      hsl(42, 40%, 88%) 40%,
+      hsl(35, 45%, 80%) 70%,
+      hsl(30, 30%, 70%) 100%
+    );
+  }
+
+  /* Animated safari jeep silhouettes */
+  .safari-jeep {
+    position: absolute;
+    width: 80px;
+    height: 40px;
+    background: hsl(var(--safari-dark) / 0.08);
+    border-radius: 8px 8px 4px 4px;
+    bottom: 8%;
+  }
+  .safari-jeep::before {
+    content: '';
+    position: absolute;
+    top: -12px;
+    left: 15px;
+    width: 40px;
+    height: 14px;
+    background: hsl(var(--safari-dark) / 0.08);
+    border-radius: 6px 6px 0 0;
+  }
+  .safari-jeep::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 8px;
+    width: 14px;
+    height: 14px;
+    background: hsl(var(--safari-dark) / 0.1);
+    border-radius: 50%;
+    box-shadow: 42px 0 0 hsl(var(--safari-dark) / 0.1);
+  }
+  .safari-jeep-1 {
+    animation: driveRight 25s linear infinite;
+  }
+  .safari-jeep-2 {
+    animation: driveRight 30s linear infinite 12s;
+    bottom: 12%;
+    transform: scale(0.7);
+    opacity: 0.6;
+  }
+
+  /* Safari animal silhouettes */
+  .safari-animal {
+    position: absolute;
+    width: 50px;
+    height: 45px;
+    background: hsl(var(--safari-dark) / 0.06);
+    clip-path: polygon(20% 100%, 25% 50%, 15% 30%, 30% 10%, 45% 0%, 60% 5%, 70% 15%, 85% 30%, 80% 50%, 75% 100%, 65% 100%, 65% 60%, 55% 55%, 45% 60%, 35% 100%);
+    bottom: 6%;
+  }
+  .safari-animal-1 {
+    animation: walkRight 40s linear infinite 5s;
+    bottom: 5%;
+  }
+  .safari-animal-2 {
+    animation: walkRight 45s linear infinite 15s;
+    bottom: 10%;
+    transform: scale(0.6);
+    opacity: 0.5;
+  }
+  .safari-animal-3 {
+    animation: walkRight 50s linear infinite 25s;
+    bottom: 15%;
+    transform: scale(0.4);
+    opacity: 0.3;
+  }
+
+  /* Safari birds */
+  .safari-bird {
+    position: absolute;
+    width: 20px;
+    height: 8px;
+    top: 15%;
+    background: transparent;
+    border-bottom: 2px solid hsl(var(--safari-dark) / 0.1);
+    border-radius: 0 0 50% 50%;
+    box-shadow: 14px 0 0 0 transparent;
+  }
+  .safari-bird::before,
+  .safari-bird::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 8px;
+    border-bottom: 2px solid hsl(var(--safari-dark) / 0.1);
+    border-radius: 0 0 50% 50%;
+  }
+  .safari-bird::before { left: -8px; top: -4px; transform: rotate(-20deg); }
+  .safari-bird::after { right: -8px; top: -4px; transform: rotate(20deg); }
+
+  .safari-bird-1 {
+    animation: flyRight 20s linear infinite;
+    top: 12%;
+  }
+  .safari-bird-2 {
+    animation: flyRight 18s linear infinite 8s;
+    top: 18%;
+    transform: scale(0.7);
+  }
+}
+
+@keyframes driveRight {
+  0% { left: -120px; }
+  100% { left: calc(100% + 120px); }
+}
+
+@keyframes walkRight {
+  0% { left: -80px; }
+  100% { left: calc(100% + 80px); }
+}
+
+@keyframes flyRight {
+  0% { left: -40px; }
+  100% { left: calc(100% + 40px); }
+}
