@@ -38,7 +38,11 @@
 
     --safari-dark: 30 15% 12%;
     --safari-warm: 33 60% 50%;
+<<<<<<< HEAD
     --safari-gold: 42 85% 55%;
+=======
+    --safari-gold: 150 40% 25%;
+>>>>>>> 3478804c (update project)
     --safari-cream: 40 40% 95%;
     --safari-green: 145 35% 28%;
     --safari-green-light: 145 25% 40%;
@@ -105,7 +109,11 @@
 @layer utilities {
   .text-gradient-gold {
     @apply bg-clip-text text-transparent;
+<<<<<<< HEAD
     background-image: linear-gradient(135deg, hsl(var(--safari-gold)), hsl(var(--safari-warm)));
+=======
+    background-image: linear-gradient(135deg, hsl(var(--safari-green)), hsl(var(--safari-green-light)));
+>>>>>>> 3478804c (update project)
   }
 
   .bg-safari-dark {
