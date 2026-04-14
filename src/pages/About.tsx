@@ -2,29 +2,13 @@ import Layout from "@/components/Layout";
 import AnimatedSection from "@/components/AnimatedSection";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-<<<<<<< HEAD
-=======
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
->>>>>>> 3478804c (update project)
 import { Link } from "react-router-dom";
 import { teamMembers } from "@/lib/data";
 import heroSafari from "@/assets/hero-safari.jpg";
 import destMara from "@/assets/dest-mara.jpg";
 import destAmboseli from "@/assets/dest-amboseli.jpg";
 import destSerengeti from "@/assets/dest-serengeti.jpg";
-<<<<<<< HEAD
-
-const teamImages = [destMara, destAmboseli, destSerengeti];
-
-const aboutCards = [
-  { title: "About Us", text: "At Tribeless Safaris, we are more than just a travel agency—we are your partners in creating lifelong memories. Our team of travel enthusiasts, planners, and destination experts is dedicated to making your journeys seamless, enriching, and unforgettable." },
-  { title: "Our Mission", text: "Our mission is simple: to inspire, guide, and enable travelers to explore the world with confidence and joy." },
-  { title: "Who We Are", text: 'Welcome to Tribeless Safaris — your trusted partner in creating unforgettable travel experiences.' },
-  { title: "Why Choose Us", text: "With years of expertise in the travel industry, we understand what makes a trip truly special. We partner with trusted local guides, handpick accommodations, and offer curated activities." },
-];
-
-const About = () => {
-=======
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { CheckCircle, Users, Award, Globe, Heart } from "lucide-react";
@@ -48,7 +32,6 @@ const About = () => {
     }
   }, [hash]);
 
->>>>>>> 3478804c (update project)
   return (
     <Layout>
       {/* Hero */}
@@ -59,22 +42,6 @@ const About = () => {
         </div>
       </section>
 
-<<<<<<< HEAD
-      {/* Info Grid */}
-      <section className="py-20">
-        <div className="container">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-            {aboutCards.map((card, i) => (
-              <AnimatedSection key={card.title} delay={i * 100}>
-                <Card className="border-none bg-safari-cream h-full">
-                  <CardContent className="p-8">
-                    <h2 className="font-display text-2xl font-bold mb-4">{card.title}</h2>
-                    <p className="text-muted-foreground leading-relaxed">
-                      {card.title === "Who We Are" ? (
-                        <>Welcome to <span className="text-primary font-semibold">Tribeless Safaris</span> — your trusted partner in creating unforgettable travel experiences.</>
-                      ) : card.text}
-                    </p>
-=======
       {/* About Section */}
       <section className="py-20">
         <div className="container max-w-4xl">
@@ -128,23 +95,17 @@ const About = () => {
                     </div>
                     <h3 className="font-display text-lg font-semibold mb-2">{reason.title}</h3>
                     <p className="text-sm text-muted-foreground">{reason.description}</p>
->>>>>>> 3478804c (update project)
                   </CardContent>
                 </Card>
               </AnimatedSection>
             ))}
           </div>
-<<<<<<< HEAD
-
-          {/* Team */}
-=======
         </div>
       </section>
 
       {/* Team */}
       <section id="our-team" className="py-20 scroll-mt-20">
         <div className="container">
->>>>>>> 3478804c (update project)
           <AnimatedSection>
             <h2 className="font-display text-3xl md:text-4xl font-bold text-center mb-12">Meet Our Team</h2>
           </AnimatedSection>

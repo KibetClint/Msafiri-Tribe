@@ -18,8 +18,6 @@ import destMauritius from "@/assets/dest-mauritius.jpg";
 import destMalindi from "@/assets/dest-malindi.jpg";
 
 export type DestinationCategory = "local" | "international" | "beach";
-<<<<<<< HEAD
-=======
 export type TripType = "wildlife-safari" | "beach-holiday" | "adventure" | "cultural" | "luxury" | "city-break";
 
 export const tripTypes: { key: TripType; label: string; description: string }[] = [
@@ -30,24 +28,17 @@ export const tripTypes: { key: TripType; label: string; description: string }[] 
   { key: "luxury", label: "Luxury Getaways", description: "Exclusive indulgence and premium comfort" },
   { key: "city-break", label: "City Breaks", description: "Explore vibrant cities and urban culture" },
 ];
->>>>>>> 3478804c (update project)
 
 export interface DestinationDetail {
   id: number;
   slug: string;
   name: string;
-<<<<<<< HEAD
-=======
   country: string;
->>>>>>> 3478804c (update project)
   description: string;
   distance: string;
   image: string;
   category: DestinationCategory;
-<<<<<<< HEAD
-=======
   tripTypes: TripType[];
->>>>>>> 3478804c (update project)
   longDescription: string;
   highlights: string[];
   bestTime: string;
@@ -64,10 +55,6 @@ export interface PackageTier {
   price: number;
   duration: string;
   accommodation: string;
-<<<<<<< HEAD
-  includes: string[];
-  itinerary: { day: number; title: string; description: string }[];
-=======
   mealBasis: string;
   includes: string[];
   itinerary: ItineraryDay[];
@@ -81,7 +68,6 @@ export interface ItineraryDay {
   accommodationDescription?: string;
   mealBasis?: string;
   destination?: string;
->>>>>>> 3478804c (update project)
 }
 
 export const destinations: DestinationDetail[] = [
@@ -89,11 +75,8 @@ export const destinations: DestinationDetail[] = [
   {
     id: 1,
     slug: "serengeti",
-<<<<<<< HEAD
-=======
     country: "Tanzania",
     tripTypes: ["wildlife-safari"] as TripType[],
->>>>>>> 3478804c (update project)
     name: "Serengeti, Tanzania",
     description: "Discover the Great Migration and diverse wildlife in the Serengeti.",
     distance: "450km",
@@ -109,10 +92,7 @@ export const destinations: DestinationDetail[] = [
         price: 1200,
         duration: "3 Days / 2 Nights",
         accommodation: "Standard tented camp",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Airport transfers", "2 game drives", "All meals", "Park fees", "Professional guide"],
         itinerary: [
           { day: 1, title: "Arrival & Afternoon Drive", description: "Arrive at Serengeti airstrip, transfer to camp. Afternoon game drive across the central plains." },
@@ -125,10 +105,7 @@ export const destinations: DestinationDetail[] = [
         price: 2200,
         duration: "5 Days / 4 Nights",
         accommodation: "Mid-range safari lodge",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Airport transfers", "Daily game drives", "All meals & drinks", "Park fees", "Professional guide", "Bush breakfast"],
         itinerary: [
           { day: 1, title: "Arrival & Welcome", description: "Fly into the Serengeti, settle into your lodge with a welcome dinner." },
@@ -143,10 +120,7 @@ export const destinations: DestinationDetail[] = [
         price: 3800,
         duration: "7 Days / 6 Nights",
         accommodation: "5-star luxury tented suite",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Private charter flights", "Unlimited game drives", "Gourmet dining", "Premium drinks", "Hot air balloon safari", "Maasai village visit", "Private guide & vehicle"],
         itinerary: [
           { day: 1, title: "VIP Arrival", description: "Private charter to Serengeti, champagne welcome at your luxury suite." },
@@ -163,11 +137,8 @@ export const destinations: DestinationDetail[] = [
   {
     id: 2,
     slug: "amboseli",
-<<<<<<< HEAD
-=======
     country: "Kenya",
     tripTypes: ["wildlife-safari"] as TripType[],
->>>>>>> 3478804c (update project)
     name: "Amboseli, Kenya",
     description: "Experience Amboseli's breathtaking views and iconic elephant herds.",
     distance: "150km",
@@ -183,10 +154,7 @@ export const destinations: DestinationDetail[] = [
         price: 900,
         duration: "2 Days / 1 Night",
         accommodation: "Budget safari lodge",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Return transfers from Nairobi", "2 game drives", "All meals", "Park fees"],
         itinerary: [
           { day: 1, title: "Drive to Amboseli", description: "Morning departure from Nairobi, arrive by lunch. Afternoon game drive with Kilimanjaro views." },
@@ -198,10 +166,7 @@ export const destinations: DestinationDetail[] = [
         price: 1900,
         duration: "4 Days / 3 Nights",
         accommodation: "Mid-range eco-lodge",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Return transfers", "Daily game drives", "All meals & soft drinks", "Park fees", "Observation Hill hike", "Bird watching tour"],
         itinerary: [
           { day: 1, title: "Arrival & Sunset Drive", description: "Transfer from Nairobi, check in, evening game drive." },
@@ -215,10 +180,7 @@ export const destinations: DestinationDetail[] = [
         price: 3200,
         duration: "5 Days / 4 Nights",
         accommodation: "Luxury tented camp with Kilimanjaro views",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Private transfers", "Unlimited game drives", "Gourmet meals", "Premium drinks", "Private guide", "Maasai village visit", "Sundowner experience"],
         itinerary: [
           { day: 1, title: "Luxury Arrival", description: "Private transfer, welcome cocktails with Kilimanjaro backdrop." },
@@ -233,11 +195,8 @@ export const destinations: DestinationDetail[] = [
   {
     id: 3,
     slug: "maasai-mara",
-<<<<<<< HEAD
-=======
     country: "Kenya",
     tripTypes: ["wildlife-safari"] as TripType[],
->>>>>>> 3478804c (update project)
     name: "Maasai Mara, Kenya",
     description: "Explore the abundant wildlife and scenic beauty of the Maasai Mara.",
     distance: "225km",
@@ -253,10 +212,7 @@ export const destinations: DestinationDetail[] = [
         price: 1100,
         duration: "3 Days / 2 Nights",
         accommodation: "Standard tented camp",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Return road transfer", "2 game drives", "All meals", "Park fees"],
         itinerary: [
           { day: 1, title: "Nairobi to Mara", description: "Drive to the Mara via the Great Rift Valley, afternoon game drive." },
@@ -269,10 +225,7 @@ export const destinations: DestinationDetail[] = [
         price: 2200,
         duration: "5 Days / 4 Nights",
         accommodation: "Mid-range safari lodge",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Return transfers", "Daily game drives", "All meals & drinks", "Park fees", "Maasai village visit", "Bush breakfast"],
         itinerary: [
           { day: 1, title: "Arrival & Orientation", description: "Transfer to the Mara, settle in, evening drive." },
@@ -287,10 +240,7 @@ export const destinations: DestinationDetail[] = [
         price: 4200,
         duration: "7 Days / 6 Nights",
         accommodation: "5-star luxury camp",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Domestic flights", "Unlimited private drives", "Gourmet dining", "Balloon safari", "Night game drive", "Private guide", "Spa treatment"],
         itinerary: [
           { day: 1, title: "Fly-in Arrival", description: "Domestic flight to the Mara, luxury camp welcome." },
@@ -307,11 +257,8 @@ export const destinations: DestinationDetail[] = [
   {
     id: 4,
     slug: "tsavo",
-<<<<<<< HEAD
-=======
     country: "Kenya",
     tripTypes: ["wildlife-safari"] as TripType[],
->>>>>>> 3478804c (update project)
     name: "Tsavo, Kenya",
     description: "Explore the vast landscapes and diverse wildlife of Tsavo National Park.",
     distance: "200km",
@@ -327,10 +274,7 @@ export const destinations: DestinationDetail[] = [
         price: 800,
         duration: "2 Days / 1 Night",
         accommodation: "Budget lodge",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Return transfers", "2 game drives", "All meals", "Park fees"],
         itinerary: [
           { day: 1, title: "Nairobi to Tsavo East", description: "Drive to Tsavo, afternoon game drive spotting red elephants." },
@@ -342,10 +286,7 @@ export const destinations: DestinationDetail[] = [
         price: 1600,
         duration: "4 Days / 3 Nights",
         accommodation: "Mid-range safari lodge",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Return transfers", "Daily game drives", "All meals", "Park fees", "Mzima Springs visit", "Lugard Falls excursion"],
         itinerary: [
           { day: 1, title: "Arrival Tsavo East", description: "Transfer, check in, evening game drive." },
@@ -359,10 +300,7 @@ export const destinations: DestinationDetail[] = [
         price: 2800,
         duration: "6 Days / 5 Nights",
         accommodation: "Luxury lodge with pool",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Private transfers", "Unlimited drives", "Gourmet meals", "Premium drinks", "Private guide", "Nature walks", "Stargazing experience"],
         itinerary: [
           { day: 1, title: "VIP Transfer", description: "Private transfer to Tsavo East luxury lodge." },
@@ -378,11 +316,8 @@ export const destinations: DestinationDetail[] = [
   {
     id: 5,
     slug: "samburu",
-<<<<<<< HEAD
-=======
     country: "Kenya",
     tripTypes: ["wildlife-safari"] as TripType[],
->>>>>>> 3478804c (update project)
     name: "Samburu, Kenya",
     description: "Experience the raw beauty and unique wildlife of Samburu National Reserve.",
     distance: "225km",
@@ -398,10 +333,7 @@ export const destinations: DestinationDetail[] = [
         price: 1000,
         duration: "3 Days / 2 Nights",
         accommodation: "Standard riverside camp",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Return transfers", "2 game drives", "All meals", "Park fees"],
         itinerary: [
           { day: 1, title: "Drive to Samburu", description: "Scenic drive from Nairobi, afternoon game drive." },
@@ -414,10 +346,7 @@ export const destinations: DestinationDetail[] = [
         price: 1800,
         duration: "4 Days / 3 Nights",
         accommodation: "Mid-range eco-lodge",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Return transfers", "Daily game drives", "All meals & drinks", "Park fees", "Samburu village visit", "River walk"],
         itinerary: [
           { day: 1, title: "Arrival & Evening Drive", description: "Transfer to Samburu, check-in, sunset game drive." },
@@ -431,10 +360,7 @@ export const destinations: DestinationDetail[] = [
         price: 3000,
         duration: "5 Days / 4 Nights",
         accommodation: "Luxury riverside lodge",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Domestic flights", "Unlimited drives", "Gourmet meals", "Premium drinks", "Private guide", "Camel safari", "Cultural immersion"],
         itinerary: [
           { day: 1, title: "Fly-in Arrival", description: "Domestic flight, luxury lodge welcome." },
@@ -449,11 +375,8 @@ export const destinations: DestinationDetail[] = [
   {
     id: 6,
     slug: "nairobi",
-<<<<<<< HEAD
-=======
     country: "Kenya",
     tripTypes: ["wildlife-safari","city-break"] as TripType[],
->>>>>>> 3478804c (update project)
     name: "Nairobi National Park",
     description: "A quick wildlife escape on the outskirts of Kenya's bustling capital.",
     distance: "10km",
@@ -469,10 +392,7 @@ export const destinations: DestinationDetail[] = [
         price: 150,
         duration: "Half Day",
         accommodation: "No accommodation (day trip)",
-<<<<<<< HEAD
-=======
         mealBasis: "Snacks & Water",
->>>>>>> 3478804c (update project)
         includes: ["Hotel pickup & drop-off", "1 game drive", "Park fees", "Water & snacks"],
         itinerary: [
           { day: 1, title: "Morning Safari", description: "Early morning pickup, 4-hour game drive through Nairobi National Park, return by lunch." },
@@ -483,10 +403,7 @@ export const destinations: DestinationDetail[] = [
         price: 400,
         duration: "Full Day",
         accommodation: "No accommodation (day trip)",
-<<<<<<< HEAD
-=======
         mealBasis: "Snacks & Water",
->>>>>>> 3478804c (update project)
         includes: ["Hotel pickup & drop-off", "Game drive", "David Sheldrick visit", "Giraffe Centre", "Lunch included", "Park fees"],
         itinerary: [
           { day: 1, title: "Full Day Wildlife Tour", description: "Morning game drive, visit the elephant orphanage, lunch, afternoon at the Giraffe Centre." },
@@ -497,10 +414,7 @@ export const destinations: DestinationDetail[] = [
         price: 800,
         duration: "2 Days / 1 Night",
         accommodation: "Boutique hotel in Nairobi",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Private transfers", "Private game drive", "Elephant orphanage", "Giraffe Centre", "Carnivore restaurant dinner", "All meals", "Park fees"],
         itinerary: [
           { day: 1, title: "VIP Safari Day", description: "Private morning game drive, lunch in the park, Giraffe Centre, dinner at The Carnivore." },
@@ -514,11 +428,8 @@ export const destinations: DestinationDetail[] = [
   {
     id: 7,
     slug: "diani-beach",
-<<<<<<< HEAD
-=======
     country: "Kenya",
     tripTypes: ["beach-holiday"] as TripType[],
->>>>>>> 3478804c (update project)
     name: "Diani Beach, Kenya",
     description: "Kenya's award-winning beach with powdery white sand and turquoise waters.",
     distance: "480km",
@@ -534,10 +445,7 @@ export const destinations: DestinationDetail[] = [
         price: 650,
         duration: "3 Days / 2 Nights",
         accommodation: "Standard beach resort",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["SGR train tickets Nairobi-Mombasa", "Return transfers", "All meals", "Beach access"],
         itinerary: [
           { day: 1, title: "Travel & Check-in", description: "SGR train to Mombasa, transfer to Diani. Afternoon at the beach." },
@@ -550,10 +458,7 @@ export const destinations: DestinationDetail[] = [
         price: 1400,
         duration: "5 Days / 4 Nights",
         accommodation: "Mid-range beach hotel",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Return flights Nairobi-Ukunda", "Airport transfers", "All meals & drinks", "Kisite Marine Park trip", "Glass-bottom boat ride"],
         itinerary: [
           { day: 1, title: "Fly to Paradise", description: "Flight to Ukunda airstrip, transfer to hotel, sunset on the beach." },
@@ -568,10 +473,7 @@ export const destinations: DestinationDetail[] = [
         price: 2800,
         duration: "7 Days / 6 Nights",
         accommodation: "5-star luxury beach villa",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Private flights", "All-inclusive dining", "Premium drinks", "Spa treatments", "Private snorkeling trip", "Skydiving experience", "Sunset dhow cruise"],
         itinerary: [
           { day: 1, title: "VIP Arrival", description: "Private flight, champagne welcome at luxury beach villa." },
@@ -588,11 +490,8 @@ export const destinations: DestinationDetail[] = [
   {
     id: 8,
     slug: "mombasa",
-<<<<<<< HEAD
-=======
     country: "Kenya",
     tripTypes: ["beach-holiday","cultural"] as TripType[],
->>>>>>> 3478804c (update project)
     name: "Mombasa, Kenya",
     description: "Kenya's coastal gem blending Swahili culture, historic forts, and stunning beaches.",
     distance: "440km",
@@ -608,10 +507,7 @@ export const destinations: DestinationDetail[] = [
         price: 500,
         duration: "3 Days / 2 Nights",
         accommodation: "Standard hotel on North Coast",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["SGR train tickets", "Hotel transfers", "All meals", "Fort Jesus tour"],
         itinerary: [
           { day: 1, title: "SGR to Mombasa", description: "Morning SGR train, arrive Mombasa. Afternoon beach time." },
@@ -624,10 +520,7 @@ export const destinations: DestinationDetail[] = [
         price: 1200,
         duration: "5 Days / 4 Nights",
         accommodation: "Beachfront resort",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Return flights", "All meals & drinks", "Fort Jesus tour", "Old Town walking tour", "Mombasa Marine Park snorkeling", "Haller Park visit"],
         itinerary: [
           { day: 1, title: "Fly to the Coast", description: "Flight to Mombasa, beachfront resort check-in, sunset swim." },
@@ -642,10 +535,7 @@ export const destinations: DestinationDetail[] = [
         price: 2500,
         duration: "7 Days / 6 Nights",
         accommodation: "5-star oceanfront suite",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Private flights", "All-inclusive", "Private city tours", "Deep-sea fishing", "Spa treatments", "Sunset cruise", "Private chef dinner"],
         itinerary: [
           { day: 1, title: "Royal Arrival", description: "Private flight, oceanfront suite with welcome cocktails." },
@@ -663,11 +553,8 @@ export const destinations: DestinationDetail[] = [
   {
     id: 15,
     slug: "lamu",
-<<<<<<< HEAD
-=======
     country: "Kenya",
     tripTypes: ["beach-holiday","cultural"] as TripType[],
->>>>>>> 3478804c (update project)
     name: "Lamu Island, Kenya",
     description: "A UNESCO World Heritage site blending Swahili culture, donkey-paced streets, and pristine beaches.",
     distance: "600km",
@@ -683,10 +570,7 @@ export const destinations: DestinationDetail[] = [
         price: 700,
         duration: "3 Days / 2 Nights",
         accommodation: "Guest house in Lamu Town",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Return flights Nairobi-Lamu", "Airport boat transfer", "Old Town walking tour", "All meals"],
         itinerary: [
           { day: 1, title: "Fly to Lamu", description: "Flight to Lamu, boat transfer, check-in. Afternoon Old Town walking tour." },
@@ -699,10 +583,7 @@ export const destinations: DestinationDetail[] = [
         price: 1500,
         duration: "5 Days / 4 Nights",
         accommodation: "Boutique Swahili hotel",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Return flights", "All transfers", "All meals & drinks", "Old Town tour", "Dhow sunset cruise", "Manda Island trip", "Swahili cooking class"],
         itinerary: [
           { day: 1, title: "Arrival & Old Town", description: "Fly in, settle into boutique hotel, guided heritage walk." },
@@ -717,10 +598,7 @@ export const destinations: DestinationDetail[] = [
         price: 3000,
         duration: "7 Days / 6 Nights",
         accommodation: "Exclusive beachfront villa",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Private flights", "All-inclusive", "Private dhow", "Deep-sea fishing", "Spa treatments", "Private chef", "Island hopping"],
         itinerary: [
           { day: 1, title: "VIP Arrival", description: "Private flight, speedboat to beachfront villa, welcome dinner." },
@@ -737,11 +615,8 @@ export const destinations: DestinationDetail[] = [
   {
     id: 16,
     slug: "malindi",
-<<<<<<< HEAD
-=======
     country: "Kenya",
     tripTypes: ["beach-holiday"] as TripType[],
->>>>>>> 3478804c (update project)
     name: "Malindi, Kenya",
     description: "A coastal paradise with pristine marine parks, Italian heritage, and golden beaches.",
     distance: "520km",
@@ -757,10 +632,7 @@ export const destinations: DestinationDetail[] = [
         price: 550,
         duration: "3 Days / 2 Nights",
         accommodation: "Standard beach hotel",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Return flights Nairobi-Malindi", "Airport transfers", "All meals", "Malindi Marine Park visit"],
         itinerary: [
           { day: 1, title: "Fly to Malindi", description: "Flight to Malindi, beach hotel check-in. Afternoon at the beach." },
@@ -773,10 +645,7 @@ export const destinations: DestinationDetail[] = [
         price: 1300,
         duration: "5 Days / 4 Nights",
         accommodation: "Mid-range beachfront resort",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Return flights", "All transfers", "All meals & drinks", "Watamu Marine Park", "Gedi Ruins tour", "Glass-bottom boat ride", "Dolphin watching"],
         itinerary: [
           { day: 1, title: "Arrival & Beach", description: "Fly in, resort check-in, sunset beach walk." },
@@ -791,10 +660,7 @@ export const destinations: DestinationDetail[] = [
         price: 2600,
         duration: "7 Days / 6 Nights",
         accommodation: "5-star oceanfront resort",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Private flights", "All-inclusive", "Private snorkeling trips", "Deep-sea fishing", "Spa package", "Sundowner cruise", "Private chef dinner"],
         itinerary: [
           { day: 1, title: "VIP Arrival", description: "Private flight, luxury resort welcome with cocktails." },
@@ -811,11 +677,8 @@ export const destinations: DestinationDetail[] = [
   {
     id: 17,
     slug: "seychelles",
-<<<<<<< HEAD
-=======
     country: "Seychelles",
     tripTypes: ["beach-holiday","luxury"] as TripType[],
->>>>>>> 3478804c (update project)
     name: "Seychelles",
     description: "A pristine archipelago of granite islands with the world's most beautiful beaches.",
     distance: "International",
@@ -831,10 +694,7 @@ export const destinations: DestinationDetail[] = [
         price: 2200,
         duration: "5 Days / 4 Nights",
         accommodation: "3-star guesthouse on Mahé",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Return flights from Nairobi", "Airport transfers", "All breakfasts", "Victoria city tour", "Beach excursion"],
         itinerary: [
           { day: 1, title: "Arrival Mahé", description: "Fly to Seychelles, transfer to guesthouse, evening at Beau Vallon Beach." },
@@ -849,10 +709,7 @@ export const destinations: DestinationDetail[] = [
         price: 4200,
         duration: "7 Days / 6 Nights",
         accommodation: "Boutique hotels on Mahé & Praslin",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Return flights", "Inter-island ferry", "All transfers", "All meals", "Vallée de Mai tour", "La Digue bike tour", "Snorkeling excursion"],
         itinerary: [
           { day: 1, title: "Arrival Mahé", description: "Fly in, settle into boutique hotel, sunset dinner." },
@@ -869,10 +726,7 @@ export const destinations: DestinationDetail[] = [
         price: 8000,
         duration: "10 Days / 9 Nights",
         accommodation: "5-star private island resort",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Business class flights", "Helicopter transfers", "All-inclusive premium", "Private island access", "Diving package", "Spa package", "Private yacht day", "Personal concierge"],
         itinerary: [
           { day: 1, title: "VIP Arrival", description: "Business class flight, helicopter to private island resort." },
@@ -892,11 +746,8 @@ export const destinations: DestinationDetail[] = [
   {
     id: 18,
     slug: "mauritius",
-<<<<<<< HEAD
-=======
     country: "Mauritius",
     tripTypes: ["beach-holiday","luxury"] as TripType[],
->>>>>>> 3478804c (update project)
     name: "Mauritius",
     description: "A tropical gem with turquoise lagoons, dramatic mountains, and vibrant multicultural heritage.",
     distance: "International",
@@ -912,10 +763,7 @@ export const destinations: DestinationDetail[] = [
         price: 1800,
         duration: "5 Days / 4 Nights",
         accommodation: "3-star beachfront hotel",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Return flights from Nairobi", "Airport transfers", "All breakfasts", "North Island tour", "Beach access"],
         itinerary: [
           { day: 1, title: "Arrival", description: "Fly to Mauritius, hotel check-in, evening at Grand Baie." },
@@ -930,10 +778,7 @@ export const destinations: DestinationDetail[] = [
         price: 3500,
         duration: "7 Days / 6 Nights",
         accommodation: "4-star resort",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Return flights", "All transfers", "All meals & drinks", "South Island tour", "Catamaran cruise", "Seven Colored Earths", "Dolphin swimming"],
         itinerary: [
           { day: 1, title: "Arrival & Resort", description: "Fly in, resort check-in, welcome cocktails." },
@@ -950,10 +795,7 @@ export const destinations: DestinationDetail[] = [
         price: 7000,
         duration: "9 Days / 8 Nights",
         accommodation: "5-star luxury resort with private pool",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Business class flights", "Private transfers", "All-inclusive premium", "Helicopter tour", "Private yacht", "Spa package", "Golf day", "Underwater sea walk"],
         itinerary: [
           { day: 1, title: "VIP Arrival", description: "Business class arrival, private transfer to luxury resort." },
@@ -974,11 +816,8 @@ export const destinations: DestinationDetail[] = [
   {
     id: 9,
     slug: "dubai",
-<<<<<<< HEAD
-=======
     country: "UAE",
     tripTypes: ["adventure","luxury","city-break"] as TripType[],
->>>>>>> 3478804c (update project)
     name: "Dubai, UAE",
     description: "Experience the dazzling luxury, desert adventures, and modern marvels of Dubai.",
     distance: "International",
@@ -994,10 +833,7 @@ export const destinations: DestinationDetail[] = [
         price: 1500,
         duration: "4 Days / 3 Nights",
         accommodation: "3-star hotel in Downtown",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Return flights from Nairobi", "Airport transfers", "City tour", "Desert safari", "All breakfasts"],
         itinerary: [
           { day: 1, title: "Arrival & Dubai Marina", description: "Arrive Dubai, hotel check-in. Evening walk along Dubai Marina and JBR Beach." },
@@ -1011,10 +847,7 @@ export const destinations: DestinationDetail[] = [
         price: 2800,
         duration: "6 Days / 5 Nights",
         accommodation: "4-star hotel, Palm Jumeirah area",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Return flights", "All transfers", "Burj Khalifa tickets", "Desert safari", "Abu Dhabi day trip", "Dhow cruise dinner", "All meals"],
         itinerary: [
           { day: 1, title: "Arrival & Marina Walk", description: "Fly in, check-in at Palm area hotel, evening Marina walk." },
@@ -1030,10 +863,7 @@ export const destinations: DestinationDetail[] = [
         price: 5500,
         duration: "8 Days / 7 Nights",
         accommodation: "5-star luxury resort (Atlantis or similar)",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Business class flights", "Private transfers", "Burj Khalifa VIP", "Private desert camp", "Helicopter tour", "Yacht dinner", "Abu Dhabi VIP", "All meals & premium drinks"],
         itinerary: [
           { day: 1, title: "VIP Arrival", description: "Business class arrival, private limo to 5-star resort, welcome dinner." },
@@ -1051,11 +881,8 @@ export const destinations: DestinationDetail[] = [
   {
     id: 10,
     slug: "zanzibar",
-<<<<<<< HEAD
-=======
     country: "Tanzania",
     tripTypes: ["beach-holiday","cultural"] as TripType[],
->>>>>>> 3478804c (update project)
     name: "Zanzibar, Tanzania",
     description: "A tropical paradise with spice markets, pristine beaches, and rich Swahili heritage.",
     distance: "International",
@@ -1071,10 +898,7 @@ export const destinations: DestinationDetail[] = [
         price: 1200,
         duration: "4 Days / 3 Nights",
         accommodation: "Standard beach hotel, Nungwi",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Return flights from Nairobi", "Airport transfers", "All meals", "Stone Town tour"],
         itinerary: [
           { day: 1, title: "Arrival & Stone Town", description: "Fly to Zanzibar, guided Stone Town walking tour, transfer to beach hotel." },
@@ -1088,10 +912,7 @@ export const destinations: DestinationDetail[] = [
         price: 2200,
         duration: "6 Days / 5 Nights",
         accommodation: "Boutique beach resort",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Return flights", "All transfers", "All meals & drinks", "Stone Town tour", "Spice tour", "Dolphin tour", "Jozani Forest", "Sunset cruise"],
         itinerary: [
           { day: 1, title: "Arrival & Stone Town", description: "Fly in, Stone Town heritage walk, Forodhani night market." },
@@ -1107,10 +928,7 @@ export const destinations: DestinationDetail[] = [
         price: 4000,
         duration: "8 Days / 7 Nights",
         accommodation: "5-star overwater/beachfront villa",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Premium flights", "Private transfers", "All-inclusive dining", "Premium drinks", "Private boat tours", "Spa package", "Deep-sea fishing", "Private chef dinner"],
         itinerary: [
           { day: 1, title: "VIP Arrival", description: "Premium flight, private speedboat transfer to luxury villa." },
@@ -1128,11 +946,8 @@ export const destinations: DestinationDetail[] = [
   {
     id: 11,
     slug: "maldives",
-<<<<<<< HEAD
-=======
     country: "Maldives",
     tripTypes: ["beach-holiday","luxury"] as TripType[],
->>>>>>> 3478804c (update project)
     name: "Maldives",
     description: "The ultimate tropical paradise — overwater villas, turquoise lagoons, and world-class diving.",
     distance: "International",
@@ -1148,10 +963,7 @@ export const destinations: DestinationDetail[] = [
         price: 2500,
         duration: "4 Days / 3 Nights",
         accommodation: "Beach bungalow resort",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Return flights (Nairobi-Malé)", "Speedboat transfers", "All meals", "Snorkeling gear", "Sunset dolphin cruise"],
         itinerary: [
           { day: 1, title: "Arrival in Paradise", description: "Fly to Malé, speedboat transfer to island resort, sunset welcome." },
@@ -1165,10 +977,7 @@ export const destinations: DestinationDetail[] = [
         price: 4500,
         duration: "6 Days / 5 Nights",
         accommodation: "Overwater bungalow",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Return flights", "Seaplane transfers", "All-inclusive meals & drinks", "Diving excursion", "Spa treatment", "Sunset fishing", "Island hopping"],
         itinerary: [
           { day: 1, title: "Seaplane Arrival", description: "Scenic seaplane to resort atoll, overwater bungalow check-in." },
@@ -1184,10 +993,7 @@ export const destinations: DestinationDetail[] = [
         price: 8500,
         duration: "8 Days / 7 Nights",
         accommodation: "Private island villa with pool",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Business class flights", "Private seaplane", "All-inclusive premium", "Unlimited diving", "Private yacht", "Underwater dining", "Personal butler", "Couples spa"],
         itinerary: [
           { day: 1, title: "VIP Arrival", description: "Business class to Malé, private seaplane to exclusive island villa." },
@@ -1205,11 +1011,8 @@ export const destinations: DestinationDetail[] = [
   {
     id: 12,
     slug: "cape-town",
-<<<<<<< HEAD
-=======
     country: "South Africa",
     tripTypes: ["adventure","cultural","city-break"] as TripType[],
->>>>>>> 3478804c (update project)
     name: "Cape Town, South Africa",
     description: "Where mountains meet the ocean — stunning landscapes, wine country, and vibrant culture.",
     distance: "International",
@@ -1225,10 +1028,7 @@ export const destinations: DestinationDetail[] = [
         price: 1800,
         duration: "5 Days / 4 Nights",
         accommodation: "3-star hotel in City Bowl",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Return flights from Nairobi", "Airport transfers", "Table Mountain tickets", "Cape Peninsula tour", "All breakfasts"],
         itinerary: [
           { day: 1, title: "Arrival", description: "Fly to Cape Town, hotel check-in, V&A Waterfront evening." },
@@ -1243,10 +1043,7 @@ export const destinations: DestinationDetail[] = [
         price: 3200,
         duration: "7 Days / 6 Nights",
         accommodation: "4-star boutique hotel",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Return flights", "All transfers", "Table Mountain", "Cape Peninsula tour", "Robben Island", "Wine tour", "Shark cage diving", "All meals"],
         itinerary: [
           { day: 1, title: "Arrival & Waterfront", description: "Fly in, check-in, sunset at V&A Waterfront." },
@@ -1263,10 +1060,7 @@ export const destinations: DestinationDetail[] = [
         price: 6000,
         duration: "9 Days / 8 Nights",
         accommodation: "5-star Clifton or Camps Bay hotel",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Business class flights", "Private transfers", "Helicopter tour", "Private wine tour", "Shark diving", "Robben Island", "Garden Route extension", "All meals & drinks", "Spa package"],
         itinerary: [
           { day: 1, title: "VIP Arrival", description: "Business class arrival, private transfer to 5-star Camps Bay hotel." },
@@ -1285,11 +1079,8 @@ export const destinations: DestinationDetail[] = [
   {
     id: 13,
     slug: "egypt",
-<<<<<<< HEAD
-=======
     country: "Egypt",
     tripTypes: ["cultural","adventure"] as TripType[],
->>>>>>> 3478804c (update project)
     name: "Egypt",
     description: "Walk among the ancient pyramids, cruise the Nile, and explore pharaonic wonders.",
     distance: "International",
@@ -1305,10 +1096,7 @@ export const destinations: DestinationDetail[] = [
         price: 1600,
         duration: "5 Days / 4 Nights",
         accommodation: "3-star hotel in Cairo & Giza",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Return flights from Nairobi", "Airport transfers", "Pyramids & Sphinx tour", "Egyptian Museum", "Khan el-Khalili bazaar", "All breakfasts"],
         itinerary: [
           { day: 1, title: "Arrival in Cairo", description: "Fly to Cairo, hotel check-in, evening Nile corniche walk." },
@@ -1323,10 +1111,7 @@ export const destinations: DestinationDetail[] = [
         price: 3500,
         duration: "8 Days / 7 Nights",
         accommodation: "4-star hotel + 4-star Nile cruise ship",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Return flights", "All transfers", "Domestic flight Cairo-Luxor", "3-night Nile cruise", "All major temples", "All meals on cruise", "Cairo breakfasts"],
         itinerary: [
           { day: 1, title: "Arrival Cairo", description: "Fly in, hotel check-in, welcome dinner." },
@@ -1344,10 +1129,7 @@ export const destinations: DestinationDetail[] = [
         price: 6500,
         duration: "10 Days / 9 Nights",
         accommodation: "5-star hotels + luxury Nile dahabiya",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Business class flights", "Private Egyptologist guide", "Luxury Nile dahabiya", "Hot air balloon Luxor", "Private Pyramids visit", "Abu Simbel flight", "All meals & premium drinks"],
         itinerary: [
           { day: 1, title: "VIP Arrival", description: "Business class to Cairo, private transfer to 5-star Pyramids-view hotel." },
@@ -1367,11 +1149,8 @@ export const destinations: DestinationDetail[] = [
   {
     id: 14,
     slug: "turkey",
-<<<<<<< HEAD
-=======
     country: "Turkey",
     tripTypes: ["cultural","adventure"] as TripType[],
->>>>>>> 3478804c (update project)
     name: "Turkey",
     description: "Where East meets West — hot air balloons, ancient ruins, bazaars, and stunning coastlines.",
     distance: "International",
@@ -1387,10 +1166,7 @@ export const destinations: DestinationDetail[] = [
         price: 1800,
         duration: "5 Days / 4 Nights",
         accommodation: "3-star hotel in Istanbul",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Return flights from Nairobi", "Airport transfers", "Istanbul city tour", "Bosphorus cruise", "All breakfasts"],
         itinerary: [
           { day: 1, title: "Arrival Istanbul", description: "Fly to Istanbul, hotel in Sultanahmet, evening Bosphorus walk." },
@@ -1405,10 +1181,7 @@ export const destinations: DestinationDetail[] = [
         price: 3200,
         duration: "8 Days / 7 Nights",
         accommodation: "4-star hotels + cave hotel in Cappadocia",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Return flights", "Domestic flights", "All transfers", "Cappadocia balloon ride", "Pamukkale tour", "All major sites", "All meals"],
         itinerary: [
           { day: 1, title: "Arrival Istanbul", description: "Fly in, Sultanahmet hotel, welcome dinner." },
@@ -1426,10 +1199,7 @@ export const destinations: DestinationDetail[] = [
         price: 5800,
         duration: "10 Days / 9 Nights",
         accommodation: "5-star hotels + luxury cave suite",
-<<<<<<< HEAD
-=======
         mealBasis: "Full Board – Dinner, Bed, Breakfast & Lunch",
->>>>>>> 3478804c (update project)
         includes: ["Business class flights", "Private guides", "VIP balloon ride", "Private yacht Bosphorus", "Turkish bath experience", "Cooking class", "All meals & drinks"],
         itinerary: [
           { day: 1, title: "VIP Arrival", description: "Business class to Istanbul, private transfer to 5-star Bosphorus hotel." },

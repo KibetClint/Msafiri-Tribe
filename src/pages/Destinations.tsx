@@ -7,11 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MapPin, Globe, Palmtree, TreePine, Search, SlidersHorizontal } from "lucide-react";
 import { Link } from "react-router-dom";
-<<<<<<< HEAD
-import { destinations, themedHolidays, DestinationCategory } from "@/lib/data";
-=======
 import { destinations, themedHolidays, tripTypes, DestinationCategory, TripType } from "@/lib/data";
->>>>>>> 3478804c (update project)
 import { Slider } from "@/components/ui/slider";
 
 const categories: { key: DestinationCategory | "all"; label: string; icon: React.ElementType }[] = [
@@ -25,10 +21,7 @@ const Destinations = () => {
   const [searchParams] = useSearchParams();
   const categoryParam = searchParams.get("category") as DestinationCategory | null;
   const themeParam = searchParams.get("theme");
-<<<<<<< HEAD
-=======
   const tripTypeParam = searchParams.get("tripType") as TripType | null;
->>>>>>> 3478804c (update project)
 
   const [activeCategory, setActiveCategory] = useState<DestinationCategory | "all">(categoryParam || "all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -60,26 +53,17 @@ const Destinations = () => {
         d.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         d.description.toLowerCase().includes(searchQuery.toLowerCase());
       const matchPrice = d.packages.basic.price >= priceRange[0] && d.packages.basic.price <= priceRange[1];
-<<<<<<< HEAD
-      return matchCategory && matchSearch && matchPrice;
-    });
-  }, [activeCategory, searchQuery, priceRange, themeSlugs]);
-=======
       const matchTripType = !tripTypeParam || d.tripTypes.includes(tripTypeParam);
       return matchCategory && matchSearch && matchPrice && matchTripType;
     });
   }, [activeCategory, searchQuery, priceRange, themeSlugs, tripTypeParam]);
->>>>>>> 3478804c (update project)
 
   const activeThemeTitle = themeParam
     ? themedHolidays.find(
         (t) => t.title.toLowerCase().replace(/[^a-z0-9]/g, "-").replace(/-+/g, "-") === themeParam
       )?.title
-<<<<<<< HEAD
-=======
     : tripTypeParam
     ? tripTypes.find(t => t.key === tripTypeParam)?.label
->>>>>>> 3478804c (update project)
     : null;
 
   return (
