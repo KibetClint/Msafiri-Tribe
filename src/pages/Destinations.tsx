@@ -5,12 +5,30 @@ import AnimatedSection from "@/components/AnimatedSection";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MapPin, Globe, Palmtree, TreePine, Search, SlidersHorizontal } from "lucide-react";
+import {
+  MapPin,
+  Globe,
+  Palmtree,
+  TreePine,
+  Search,
+  SlidersHorizontal,
+} from "lucide-react";
 import { Link } from "react-router-dom";
-import { destinations, themedHolidays, tripTypes, DestinationCategory, TripType } from "@/lib/data";
+import {
+  destinations,
+  themedHolidays,
+  tripTypes,
+  DestinationCategory,
+  TripType,
+} from "@/lib/data";
 import { Slider } from "@/components/ui/slider";
+import { useCurrencyContext } from "@/context/CurrencyContext";
 
-const categories: { key: DestinationCategory | "all"; label: string; icon: React.ElementType }[] = [
+const categories: {
+  key: DestinationCategory | "all";
+  label: string;
+  icon: React.ElementType;
+}[] = [
   { key: "all", label: "All Destinations", icon: Globe },
   { key: "local", label: "Local Safaris", icon: TreePine },
   { key: "beach", label: "Beach Holidays", icon: Palmtree },
@@ -18,24 +36,41 @@ const categories: { key: DestinationCategory | "all"; label: string; icon: React
 ];
 
 const Destinations = () => {
+  const {
+    formatPrice,
+    currency,
+    loading: currencyLoading,
+  } = useCurrencyContext();
+
   const [searchParams] = useSearchParams();
-  const categoryParam = searchParams.get("category") as DestinationCategory | null;
+  const categoryParam = searchParams.get(
+    "category",
+  ) as DestinationCategory | null;
   const themeParam = searchParams.get("theme");
   const tripTypeParam = searchParams.get("tripType") as TripType | null;
 
-  const [activeCategory, setActiveCategory] = useState<DestinationCategory | "all">(categoryParam || "all");
+  const [activeCategory, setActiveCategory] = useState<
+    DestinationCategory | "all"
+  >(categoryParam || "all");
   const [searchQuery, setSearchQuery] = useState("");
   const [showFilters, setShowFilters] = useState(false);
 
   const allPrices = destinations.map((d) => d.packages.basic.price);
   const minPrice = Math.min(...allPrices);
   const maxPrice = Math.max(...allPrices);
-  const [priceRange, setPriceRange] = useState<[number, number]>([minPrice, maxPrice]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([
+    minPrice,
+    maxPrice,
+  ]);
 
   const themeSlugs = useMemo(() => {
     if (!themeParam) return null;
     const theme = themedHolidays.find(
-      (t) => t.title.toLowerCase().replace(/[^a-z0-9]/g, "-").replace(/-+/g, "-") === themeParam
+      (t) =>
+        t.title
+          .toLowerCase()
+          .replace(/[^a-z0-9]/g, "-")
+          .replace(/-+/g, "-") === themeParam,
     );
     return theme?.slugs || null;
   }, [themeParam]);
@@ -47,24 +82,32 @@ const Destinations = () => {
   const filtered = useMemo(() => {
     return destinations.filter((d) => {
       if (themeSlugs) return themeSlugs.includes(d.slug);
-      const matchCategory = activeCategory === "all" || d.category === activeCategory;
+      const matchCategory =
+        activeCategory === "all" || d.category === activeCategory;
       const matchSearch =
         !searchQuery ||
         d.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         d.description.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchPrice = d.packages.basic.price >= priceRange[0] && d.packages.basic.price <= priceRange[1];
-      const matchTripType = !tripTypeParam || d.tripTypes.includes(tripTypeParam);
+      const matchPrice =
+        d.packages.basic.price >= priceRange[0] &&
+        d.packages.basic.price <= priceRange[1];
+      const matchTripType =
+        !tripTypeParam || d.tripTypes.includes(tripTypeParam);
       return matchCategory && matchSearch && matchPrice && matchTripType;
     });
   }, [activeCategory, searchQuery, priceRange, themeSlugs, tripTypeParam]);
 
   const activeThemeTitle = themeParam
     ? themedHolidays.find(
-        (t) => t.title.toLowerCase().replace(/[^a-z0-9]/g, "-").replace(/-+/g, "-") === themeParam
+        (t) =>
+          t.title
+            .toLowerCase()
+            .replace(/[^a-z0-9]/g, "-")
+            .replace(/-+/g, "-") === themeParam,
       )?.title
     : tripTypeParam
-    ? tripTypes.find(t => t.key === tripTypeParam)?.label
-    : null;
+      ? tripTypes.find((t) => t.key === tripTypeParam)?.label
+      : null;
 
   return (
     <Layout>
@@ -85,7 +128,10 @@ const Destinations = () => {
             <AnimatedSection delay={100}>
               <div className="max-w-2xl mx-auto mb-8">
                 <div className="relative">
-                  <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                  <Search
+                    size={18}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground"
+                  />
                   <Input
                     placeholder="Search destinations..."
                     value={searchQuery}
@@ -95,9 +141,10 @@ const Destinations = () => {
                   <button
                     onClick={() => setShowFilters(!showFilters)}
                     className={`absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full transition-colors ${
-                      showFilters ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted"
-                    }`}
-                  >
+                      showFilters
+                        ? "bg-primary text-primary-foreground"
+                        : "text-muted-foreground hover:bg-muted"
+                    }`}>
                     <SlidersHorizontal size={18} />
                   </button>
                 </div>
@@ -105,15 +152,28 @@ const Destinations = () => {
                 {showFilters && (
                   <div className="mt-4 p-5 bg-muted/50 rounded-xl animate-fade-in">
                     <div className="flex items-center justify-between mb-3">
-                      <span className="text-sm font-semibold">Price Range (from)</span>
-                      <span className="text-sm text-muted-foreground">${priceRange[0]} — ${priceRange[1]}</span>
+                      <span className="text-sm font-semibold">
+                        Price Range (from)
+                        {!currencyLoading && (
+                          <span className="ml-2 text-xs font-normal text-muted-foreground">
+                            · {currency.name}
+                          </span>
+                        )}
+                      </span>
+                      <span className="text-sm text-muted-foreground">
+                        {currencyLoading
+                          ? `$${priceRange[0]} — $${priceRange[1]}`
+                          : `${formatPrice(priceRange[0])} — ${formatPrice(priceRange[1])}`}
+                      </span>
                     </div>
                     <Slider
                       min={minPrice}
                       max={maxPrice}
                       step={50}
                       value={priceRange}
-                      onValueChange={(val) => setPriceRange(val as [number, number])}
+                      onValueChange={(val) =>
+                        setPriceRange(val as [number, number])
+                      }
                       className="w-full"
                     />
                   </div>
@@ -129,8 +189,7 @@ const Destinations = () => {
                       activeCategory === cat.key
                         ? "bg-primary text-primary-foreground shadow-md"
                         : "bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-                    }`}
-                  >
+                    }`}>
                     <cat.icon size={16} />
                     {cat.label}
                   </button>
@@ -143,7 +202,9 @@ const Destinations = () => {
             <AnimatedSection>
               <div className="text-center mb-8">
                 <Link to="/destinations">
-                  <Button variant="outline" size="sm">← View All Destinations</Button>
+                  <Button variant="outline" size="sm">
+                    ← View All Destinations
+                  </Button>
                 </Link>
               </div>
             </AnimatedSection>
@@ -167,17 +228,29 @@ const Destinations = () => {
                     </span>
                   </div>
                   <CardContent className="p-6">
-                    <h3 className="font-display text-xl font-semibold mb-2">{d.name}</h3>
-                    <p className="text-muted-foreground text-sm mb-3">{d.description}</p>
+                    <h3 className="font-display text-xl font-semibold mb-2">
+                      {d.name}
+                    </h3>
+                    <p className="text-muted-foreground text-sm mb-3">
+                      {d.description}
+                    </p>
                     <div className="flex items-center justify-between mb-4">
-                      <span className="text-lg font-bold text-safari-warm">From ${d.packages.basic.price}</span>
+                      <span className="text-lg font-bold text-safari-warm">
+                        {currencyLoading
+                          ? `From $${d.packages.basic.price}`
+                          : `From ${formatPrice(d.packages.basic.price)}`}
+                      </span>
                       <span className="flex items-center gap-1 text-xs text-muted-foreground">
                         <MapPin size={12} />
-                        {d.category === "international" ? "International" : d.distance}
+                        {d.category === "international"
+                          ? "International"
+                          : d.distance}
                       </span>
                     </div>
                     <Link to={`/destinations/${d.slug}`}>
-                      <Button size="sm" className="w-full bg-primary text-primary-foreground hover:bg-safari-green-light">
+                      <Button
+                        size="sm"
+                        className="w-full bg-primary text-primary-foreground hover:bg-safari-green-light">
                         View Details
                       </Button>
                     </Link>
@@ -189,8 +262,12 @@ const Destinations = () => {
 
           {filtered.length === 0 && (
             <div className="text-center py-16">
-              <p className="text-muted-foreground text-lg mb-2">No destinations found.</p>
-              <p className="text-sm text-muted-foreground">Try adjusting your search or filters.</p>
+              <p className="text-muted-foreground text-lg mb-2">
+                No destinations found.
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Try adjusting your search or filters.
+              </p>
               <Button
                 variant="outline"
                 className="mt-4"
@@ -198,8 +275,7 @@ const Destinations = () => {
                   setSearchQuery("");
                   setPriceRange([minPrice, maxPrice]);
                   setActiveCategory("all");
-                }}
-              >
+                }}>
                 Clear All Filters
               </Button>
             </div>
