@@ -1,3 +1,3 @@
-# Welcome to your Lovable project
+Travel And Tours project
 
 TODO: Document your project here
