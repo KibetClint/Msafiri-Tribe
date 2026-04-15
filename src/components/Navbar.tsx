@@ -117,7 +117,7 @@ const Navbar = () => {
 
   const simpleLinks = [
     { label: "Home", path: "/" },
-    { label: "Custom Travels", path: "/membership" },
+    { label: "Custom Travels", path: "/customtravels" },
     { label: "Book", path: "/book" },
     { label: "Contact", path: "/contact" },
     { label: "FAQs", path: "/faqs" },

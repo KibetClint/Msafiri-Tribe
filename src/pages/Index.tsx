@@ -10,8 +10,6 @@ import {
   Plane,
   Building,
   Quote,
-  ChevronLeft,
-  ChevronRight,
   Heart,
   Umbrella,
   Binoculars,
@@ -24,6 +22,7 @@ import heroBeach from "@/assets/hero-beach.jpg";
 import heroAdventure from "@/assets/hero-adventure.jpg";
 import { destinations, testimonials, themedHolidays } from "@/lib/data";
 import AnimatedSection from "@/components/AnimatedSection";
+import { useCurrencyContext } from "@/context/CurrencyContext"; // 👈
 
 const heroSlides = [
   {
@@ -96,6 +95,7 @@ const getThemeSlug = (title: string) =>
     .replace(/[^a-z0-9]/g, "-")
     .replace(/-+/g, "-");
 
+// ── Hero Slider (no prices, no changes needed) ────────────────────────────────
 const HeroSlider = () => {
   const [current, setCurrent] = useState(0);
 
@@ -148,12 +148,20 @@ const HeroSlider = () => {
   );
 };
 
+// ── Main Page ─────────────────────────────────────────────────────────────────
 const Index = () => {
+  const { formatPrice, loading: currencyLoading } = useCurrencyContext(); // 👈
+
+  const featuredDestinations = destinations.slice(0, 8);
+  const internationalDestinations = destinations
+    .filter((d) => d.category === "international")
+    .slice(0, 6);
+
   return (
     <Layout>
       <HeroSlider />
 
-      {/* Services */}
+      {/* ── Services ── */}
       <section className="py-20 bg-safari-cream">
         <div className="container">
           <AnimatedSection>
@@ -183,9 +191,8 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Themed Holidays with Safari Drive Background */}
+      {/* ── Themed Holidays ── */}
       <section className="py-20 relative overflow-hidden safari-drive-bg">
-        {/* Animated safari silhouettes */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="safari-jeep safari-jeep-1" />
           <div className="safari-jeep safari-jeep-2" />
@@ -231,7 +238,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Featured Destinations */}
+      {/* ── Featured Destinations ── */}
       <section className="py-20 bg-safari-cream">
         <div className="container">
           <AnimatedSection>
@@ -243,10 +250,8 @@ const Index = () => {
             </p>
           </AnimatedSection>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {destinations.slice(0, 8).map((d) => (
-              <AnimatedSection
-                key={d.id}
-                delay={(destinations.slice(0, 8).indexOf(d) % 4) * 100}>
+            {featuredDestinations.map((d, idx) => (
+              <AnimatedSection key={d.id} delay={(idx % 4) * 100}>
                 <Link to={`/destinations/${d.slug}`} className="group block">
                   <div className="relative overflow-hidden rounded-lg aspect-[3/4]">
                     <img
@@ -265,8 +270,12 @@ const Index = () => {
                       <h3 className="font-display text-lg font-bold text-primary-foreground">
                         {d.name}
                       </h3>
+                      {/* 👇 UPDATED */}
                       <p className="text-primary-foreground/70 text-xs mt-1">
-                        From ${d.packages.basic.price}
+                        From{" "}
+                        {currencyLoading
+                          ? `$${d.packages.basic.price}`
+                          : formatPrice(d.packages.basic.price)}
                       </p>
                     </div>
                   </div>
@@ -288,7 +297,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Popular International Trips */}
+      {/* ── Popular International Trips ── */}
       <section className="py-20">
         <div className="container">
           <AnimatedSection>
@@ -300,52 +309,44 @@ const Index = () => {
             </p>
           </AnimatedSection>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {destinations
-              .filter((d) => d.category === "international")
-              .slice(0, 6)
-              .map((d) => (
-                <AnimatedSection
-                  key={d.id}
-                  delay={
-                    (destinations
-                      .filter((dd) => dd.category === "international")
-                      .slice(0, 6)
-                      .indexOf(d) %
-                      3) *
-                    120
-                  }>
-                  <Link to={`/destinations/${d.slug}`} className="group block">
-                    <Card className="overflow-hidden border-none shadow-md hover:shadow-xl transition-shadow">
-                      <div className="relative overflow-hidden aspect-video">
-                        <img
-                          src={d.image}
-                          alt={d.name}
-                          loading="lazy"
-                          width={1024}
-                          height={768}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                      </div>
-                      <CardContent className="p-6">
-                        <h3 className="font-display text-xl font-semibold mb-1">
-                          {d.name}
-                        </h3>
-                        <p className="text-sm text-muted-foreground mb-2">
-                          {d.description}
-                        </p>
-                        <p className="text-2xl font-bold text-safari-warm">
-                          From ${d.packages.basic.price}
-                        </p>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                </AnimatedSection>
-              ))}
+            {internationalDestinations.map((d, idx) => (
+              <AnimatedSection key={d.id} delay={(idx % 3) * 120}>
+                <Link to={`/destinations/${d.slug}`} className="group block">
+                  <Card className="overflow-hidden border-none shadow-md hover:shadow-xl transition-shadow">
+                    <div className="relative overflow-hidden aspect-video">
+                      <img
+                        src={d.image}
+                        alt={d.name}
+                        loading="lazy"
+                        width={1024}
+                        height={768}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+                    <CardContent className="p-6">
+                      <h3 className="font-display text-xl font-semibold mb-1">
+                        {d.name}
+                      </h3>
+                      <p className="text-sm text-muted-foreground mb-2">
+                        {d.description}
+                      </p>
+                      {/* 👇 UPDATED */}
+                      <p className="text-2xl font-bold text-safari-warm">
+                        From{" "}
+                        {currencyLoading
+                          ? `$${d.packages.basic.price}`
+                          : formatPrice(d.packages.basic.price)}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </AnimatedSection>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Why Travel With Us */}
+      {/* ── Why Travel With Us ── */}
       <section className="py-20 bg-safari-cream">
         <div className="container">
           <AnimatedSection>
@@ -373,7 +374,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* ── Testimonials ── */}
       <section className="py-20 bg-safari-dark">
         <div className="container">
           <AnimatedSection>
@@ -399,7 +400,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* CTAs */}
+      {/* ── CTAs ── */}
       <section className="py-20">
         <div className="container">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -418,7 +419,7 @@ const Index = () => {
               },
               {
                 title: "Design Your Own Safari",
-                desc: "Create a personalized safari experience tailored to your interests.",
+                desc: "Create a personalized safari experience tailored to you.",
                 cta: "Customize",
                 link: "/customize",
               },
