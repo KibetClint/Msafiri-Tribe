@@ -15,34 +15,42 @@ import NotFound from "./pages/NotFound.tsx";
 import Admin from "./pages/Admin.tsx";
 import AdminLogin from "./pages/AdminLogin.tsx";
 import { CurrencyProvider } from "./context/CurrencyContext.tsx";
+import { NavbarVisibilityProvider } from "./context/NavbarVisibilityContext.tsx";
+import { UpcomingDestinationsProvider } from "./context/UpcomingDestinationsContext.tsx";
 import CustomTravels from "./pages/CustomTravels.tsx";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    {" "}
     <CurrencyProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/destinations" element={<Destinations />} />
-            <Route path="/destinations/:slug" element={<DestinationDetail />} />
-            <Route path="/customtravels" element={<CustomTravels />} />
-            <Route path="/customize" element={<CustomPackage />} />
-            <Route path="/book" element={<Book />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/faqs" element={<FAQs />} />
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/admin" element={<Admin />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+      <NavbarVisibilityProvider>
+        <UpcomingDestinationsProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/destinations" element={<Destinations />} />
+                <Route
+                  path="/destinations/:slug"
+                  element={<DestinationDetail />}
+                />
+                <Route path="/customtravels" element={<CustomTravels />} />
+                <Route path="/customize" element={<CustomPackage />} />
+                <Route path="/book" element={<Book />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/faqs" element={<FAQs />} />
+                <Route path="/admin/login" element={<AdminLogin />} />
+                <Route path="/admin" element={<Admin />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </TooltipProvider>
+        </UpcomingDestinationsProvider>
+      </NavbarVisibilityProvider>
     </CurrencyProvider>
   </QueryClientProvider>
 );

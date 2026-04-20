@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useRef, useEffect, useCallback, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   Menu,
@@ -10,6 +10,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { destinations, tripTypes } from "@/lib/data";
+import { useNavbarVisibility } from "@/context/NavbarVisibilityContext";
 
 const TopBar = () => (
   <div className="bg-safari-green text-primary-foreground text-sm py-2">
@@ -104,7 +105,10 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
-  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+
+  // Shared visibility state via context
+  const { isHeaderVisible, setIsHeaderVisible } = useNavbarVisibility();
+
   const inactivityTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const { pathname } = useLocation();
@@ -136,7 +140,7 @@ const Navbar = () => {
         setIsHeaderVisible(false);
       }
     }, 5000);
-  }, [open, activeDropdown]);
+  }, [open, activeDropdown, setIsHeaderVisible]);
 
   useEffect(() => {
     resetInactivityTimer();
@@ -456,8 +460,12 @@ const Navbar = () => {
         </nav>
       </div>
 
-      {/* spacer so page content does not go under fixed header */}
-      <div className="h-[104px] md:h-[104px]" />
+      {/* Spacer collapses when navbar is hidden so hero can fill the gap */}
+      <div
+        className={`transition-all duration-500 ${
+          isHeaderVisible ? "h-[104px]" : "h-0"
+        }`}
+      />
     </>
   );
 };

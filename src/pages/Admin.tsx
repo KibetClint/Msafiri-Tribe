@@ -5,6 +5,9 @@ import AnimatedSection from "@/components/AnimatedSection";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import { LucideIcon } from "lucide-react";
 import {
   Table,
@@ -38,8 +41,20 @@ import {
   Trash2,
   Pencil,
   Eye,
+  MapPin,
+  Plus,
+  Globe,
+  ListFilter,
+  PenLine,
 } from "lucide-react";
 import { toast } from "sonner";
+import {
+  useUpcomingDestinations,
+  UpcomingDestination,
+} from "@/context/UpcomingDestinationsContext";
+import { destinations } from "@/lib/data";
+
+// ── Dummy data ────────────────────────────────────────────────────────────────
 
 const initialBookings = [
   {
@@ -176,6 +191,8 @@ const dummyContacts = [
   },
 ];
 
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
 const statusColor = (status: string) => {
   switch (status) {
     case "confirmed":
@@ -189,6 +206,17 @@ const statusColor = (status: string) => {
     default:
       return "";
   }
+};
+
+/** Format ISO date ("2026-09-15") → "15 Sep 2026" for display in the card */
+const formatDateLabel = (dateStr: string) => {
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return dateStr; // fallback to raw string
+  return d.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
 };
 
 const StatCard = ({
@@ -216,16 +244,52 @@ const StatCard = ({
   </Card>
 );
 
+// ── Blank form ────────────────────────────────────────────────────────────────
+
+const blankForm = (): Omit<UpcomingDestination, "id"> => ({
+  name: "",
+  country: "",
+  description: "",
+  launchDate: "",
+  tag: "Safari",
+  imageUrl: "",
+  slug: "",
+  localPrice: undefined,
+  foreignerPrice: undefined,
+  discountPercent: undefined,
+  offerLabel: "",
+  offerExpiry: "",
+});
+
+// ── Category → tag mapping ────────────────────────────────────────────────────
+
+const categoryToTag = (category: string): string => {
+  const map: Record<string, string> = {
+    local: "Safari",
+    beach: "Beach",
+    international: "Adventure",
+    adventure: "Adventure",
+    luxury: "Luxury",
+    budget: "Budget",
+    cultural: "Cultural",
+  };
+  return map[category?.toLowerCase()] ?? "Safari";
+};
+
+// ── Admin Page ────────────────────────────────────────────────────────────────
+
 const Admin = () => {
   const navigate = useNavigate();
   const [bookings, setBookings] = useState(initialBookings);
+  const { upcoming, addUpcoming, updateUpcoming, deleteUpcoming } =
+    useUpcomingDestinations();
 
   useEffect(() => {
     const isAuth = sessionStorage.getItem("admin_authenticated");
-    if (!isAuth) {
-      navigate("/admin/login", { replace: true });
-    }
+    if (!isAuth) navigate("/admin/login", { replace: true });
   }, [navigate]);
+
+  // Booking dialogs
   const [editBooking, setEditBooking] = useState<
     (typeof initialBookings)[0] | null
   >(null);
@@ -252,6 +316,91 @@ const Admin = () => {
     setEditBooking(null);
   };
 
+  // ── Upcoming destination state ────────────────────────────────────────────
+
+  const [upcomingForm, setUpcomingForm] =
+    useState<Omit<UpcomingDestination, "id">>(blankForm());
+  const [editingUpcoming, setEditingUpcoming] =
+    useState<UpcomingDestination | null>(null);
+  const [showUpcomingForm, setShowUpcomingForm] = useState(false);
+  const [deleteUpcomingTarget, setDeleteUpcomingTarget] =
+    useState<UpcomingDestination | null>(null);
+
+  /**
+   * "custom"  — admin fills in all fields manually
+   * "existing" — admin picks from the destinations already in @/lib/data
+   */
+  const [addMode, setAddMode] = useState<"custom" | "existing">("custom");
+  const [selectedDestId, setSelectedDestId] = useState<string>("");
+
+  const openAddUpcoming = () => {
+    setEditingUpcoming(null);
+    setUpcomingForm(blankForm());
+    setAddMode("custom");
+    setSelectedDestId("");
+    setShowUpcomingForm(true);
+  };
+
+  const openEditUpcoming = (d: UpcomingDestination) => {
+    setEditingUpcoming(d);
+    setUpcomingForm({
+      name: d.name,
+      country: d.country,
+      description: d.description,
+      launchDate: d.launchDate,
+      tag: d.tag,
+      imageUrl: d.imageUrl,
+      slug: d.slug ?? "",
+      localPrice: d.localPrice,
+      foreignerPrice: d.foreignerPrice,
+      discountPercent: d.discountPercent,
+      offerLabel: d.offerLabel ?? "",
+      offerExpiry: d.offerExpiry ?? "",
+    });
+    setAddMode("custom");
+    setSelectedDestId("");
+    setShowUpcomingForm(true);
+  };
+
+  /** When the admin picks an existing destination, pre-fill the form */
+  const handlePickExisting = (id: string) => {
+    setSelectedDestId(id);
+    const dest = destinations.find((d) => String(d.id) === id);
+    if (!dest) return;
+    setUpcomingForm((f) => ({
+      ...f,
+      name: dest.name,
+      country: (dest as any).country ?? dest.category ?? "",
+      description: dest.description ?? "",
+      tag: categoryToTag(dest.category),
+      imageUrl: dest.image ?? "",
+      // slug enables the card on the home page to link to the full detail page
+      slug: dest.slug ?? "",
+    }));
+  };
+
+  const handleSaveUpcoming = () => {
+    if (!upcomingForm.name.trim() || !upcomingForm.country.trim()) {
+      toast.error("Name and country are required.");
+      return;
+    }
+    if (editingUpcoming) {
+      updateUpcoming({ ...upcomingForm, id: editingUpcoming.id });
+      toast.success(`"${upcomingForm.name}" updated`);
+    } else {
+      addUpcoming(upcomingForm);
+      toast.success(`"${upcomingForm.name}" added to upcoming destinations`);
+    }
+    setShowUpcomingForm(false);
+  };
+
+  const handleDeleteUpcoming = () => {
+    if (!deleteUpcomingTarget) return;
+    deleteUpcoming(deleteUpcomingTarget.id);
+    toast.success(`"${deleteUpcomingTarget.name}" removed`);
+    setDeleteUpcomingTarget(null);
+  };
+
   return (
     <Layout>
       <div className="container py-8">
@@ -260,12 +409,13 @@ const Admin = () => {
             Admin Dashboard
           </h1>
           <p className="text-muted-foreground mb-8">
-            Manage bookings, enquiries, messages and contacts
+            Manage bookings, enquiries, messages, contacts and upcoming
+            destinations
           </p>
         </AnimatedSection>
 
         <AnimatedSection delay={100}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
             <StatCard
               title="Total Bookings"
               value={bookings.length}
@@ -290,18 +440,26 @@ const Admin = () => {
               icon={Users}
               description="3 this week"
             />
+            <StatCard
+              title="Upcoming"
+              value={upcoming.length}
+              icon={Globe}
+              description="Shown on home page"
+            />
           </div>
         </AnimatedSection>
 
         <AnimatedSection delay={200}>
           <Tabs defaultValue="bookings" className="space-y-4">
-            <TabsList className="grid w-full grid-cols-4">
+            <TabsList className="grid w-full grid-cols-5">
               <TabsTrigger value="bookings">Bookings</TabsTrigger>
               <TabsTrigger value="enquiries">Enquiries</TabsTrigger>
               <TabsTrigger value="messages">Messages</TabsTrigger>
               <TabsTrigger value="contacts">Contacts</TabsTrigger>
+              <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
             </TabsList>
 
+            {/* ── Bookings ── */}
             <TabsContent value="bookings">
               <Card>
                 <CardHeader>
@@ -376,6 +534,7 @@ const Admin = () => {
               </Card>
             </TabsContent>
 
+            {/* ── Enquiries ── */}
             <TabsContent value="enquiries">
               <Card>
                 <CardHeader>
@@ -422,6 +581,7 @@ const Admin = () => {
               </Card>
             </TabsContent>
 
+            {/* ── Messages ── */}
             <TabsContent value="messages">
               <Card>
                 <CardHeader>
@@ -466,6 +626,7 @@ const Admin = () => {
               </Card>
             </TabsContent>
 
+            {/* ── Contacts ── */}
             <TabsContent value="contacts">
               <Card>
                 <CardHeader>
@@ -505,11 +666,99 @@ const Admin = () => {
                 </CardContent>
               </Card>
             </TabsContent>
+
+            {/* ── Upcoming Destinations ── */}
+            <TabsContent value="upcoming">
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between">
+                  <div>
+                    <CardTitle>Upcoming Destinations</CardTitle>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      These appear in the "Coming Soon" section on the home
+                      page.
+                    </p>
+                  </div>
+                  <Button onClick={openAddUpcoming} className="gap-2">
+                    <Plus className="h-4 w-4" /> Add Destination
+                  </Button>
+                </CardHeader>
+                <CardContent>
+                  {upcoming.length === 0 ? (
+                    <div className="text-center py-16 text-muted-foreground">
+                      <MapPin className="h-10 w-10 mx-auto mb-3 opacity-30" />
+                      <p className="font-medium">
+                        No upcoming destinations yet
+                      </p>
+                      <p className="text-sm mt-1">
+                        Add one to have it appear on the home page.
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                      {upcoming.map((d) => (
+                        <div
+                          key={d.id}
+                          className="group relative rounded-xl border border-border bg-safari-cream overflow-hidden hover:shadow-md transition-shadow">
+                          <div className="h-36 bg-safari-green/10 flex items-center justify-center overflow-hidden relative">
+                            {d.imageUrl ? (
+                              <img
+                                src={d.imageUrl}
+                                alt={d.name}
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  (e.target as HTMLImageElement).style.display =
+                                    "none";
+                                }}
+                              />
+                            ) : (
+                              <MapPin className="h-10 w-10 text-safari-green/30" />
+                            )}
+                            <span className="absolute top-3 left-3 text-[10px] font-black tracking-widest uppercase px-2.5 py-1 rounded-full bg-safari-green text-white">
+                              {d.tag}
+                            </span>
+                          </div>
+
+                          <div className="p-4">
+                            <div className="flex items-start justify-between gap-2 mb-1">
+                              <h3 className="font-display font-bold text-sm leading-tight">
+                                {d.name}
+                              </h3>
+                              <span className="text-[10px] text-muted-foreground whitespace-nowrap shrink-0 mt-0.5">
+                                {formatDateLabel(d.launchDate)}
+                              </span>
+                            </div>
+                            <p className="text-xs text-safari-warm font-semibold mb-2">
+                              {d.country}
+                            </p>
+                            <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+                              {d.description}
+                            </p>
+                          </div>
+
+                          <div className="absolute top-3 right-3 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button
+                              onClick={() => openEditUpcoming(d)}
+                              className="w-7 h-7 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow hover:bg-white transition-colors">
+                              <Pencil className="h-3.5 w-3.5 text-foreground" />
+                            </button>
+                            <button
+                              onClick={() => setDeleteUpcomingTarget(d)}
+                              className="w-7 h-7 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow hover:bg-destructive hover:text-white transition-colors">
+                              <Trash2 className="h-3.5 w-3.5" />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
           </Tabs>
         </AnimatedSection>
       </div>
 
-      {/* Update Status Dialog */}
+      {/* ── Booking: Update Status Dialog ── */}
       <Dialog
         open={!!editBooking}
         onOpenChange={(open) => !open && setEditBooking(null)}>
@@ -543,7 +792,7 @@ const Admin = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Delete Confirmation Dialog */}
+      {/* ── Booking: Delete Confirmation ── */}
       <Dialog
         open={!!deleteBooking}
         onOpenChange={(open) => !open && setDeleteBooking(null)}>
@@ -562,6 +811,386 @@ const Admin = () => {
             </Button>
             <Button variant="destructive" onClick={handleDelete}>
               Delete
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* ── Upcoming: Add / Edit Dialog ── */}
+      <Dialog
+        open={showUpcomingForm}
+        onOpenChange={(open) => !open && setShowUpcomingForm(false)}>
+        <DialogContent className="max-w-lg max-h-[90vh] flex flex-col">
+          <DialogHeader className="shrink-0">
+            <DialogTitle>
+              {editingUpcoming
+                ? "Edit Upcoming Destination"
+                : "Add Upcoming Destination"}
+            </DialogTitle>
+            <DialogDescription>
+              This will appear in the "Coming Soon" section on the home page.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="grid gap-4 py-2 overflow-y-auto pr-1">
+            {/* ── Source toggle (only shown when adding, not editing) ── */}
+            {!editingUpcoming && (
+              <div className="flex rounded-lg border border-border overflow-hidden text-sm font-medium">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAddMode("custom");
+                    setSelectedDestId("");
+                    setUpcomingForm(blankForm());
+                  }}
+                  className={`flex-1 flex items-center justify-center gap-2 py-2.5 transition-colors ${
+                    addMode === "custom"
+                      ? "bg-safari-green text-white"
+                      : "bg-background text-muted-foreground hover:text-foreground"
+                  }`}>
+                  <PenLine className="h-3.5 w-3.5" />
+                  Custom
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setAddMode("existing")}
+                  className={`flex-1 flex items-center justify-center gap-2 py-2.5 transition-colors ${
+                    addMode === "existing"
+                      ? "bg-safari-green text-white"
+                      : "bg-background text-muted-foreground hover:text-foreground"
+                  }`}>
+                  <ListFilter className="h-3.5 w-3.5" />
+                  From Existing
+                </button>
+              </div>
+            )}
+
+            {/* ── "From Existing" destination picker ── */}
+            {addMode === "existing" && !editingUpcoming && (
+              <div className="space-y-1.5">
+                <Label>Pick a destination</Label>
+                <Select
+                  value={selectedDestId}
+                  onValueChange={handlePickExisting}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a destination…" />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-56">
+                    {destinations.map((dest) => (
+                      <SelectItem key={dest.id} value={String(dest.id)}>
+                        {dest.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {selectedDestId && (
+                  <p className="text-xs text-muted-foreground">
+                    Fields pre-filled from the destination. You can still edit
+                    them below.
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* ── Name & Country ── */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1.5">
+                <Label htmlFor="up-name">
+                  Destination Name <span className="text-destructive">*</span>
+                </Label>
+                <Input
+                  id="up-name"
+                  placeholder="e.g. Gorilla Trekking"
+                  value={upcomingForm.name}
+                  onChange={(e) =>
+                    setUpcomingForm((f) => ({ ...f, name: e.target.value }))
+                  }
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="up-country">
+                  Country <span className="text-destructive">*</span>
+                </Label>
+                <Input
+                  id="up-country"
+                  placeholder="e.g. Uganda"
+                  value={upcomingForm.country}
+                  onChange={(e) =>
+                    setUpcomingForm((f) => ({ ...f, country: e.target.value }))
+                  }
+                />
+              </div>
+            </div>
+
+            {/* ── Category & Launch Date ── */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1.5">
+                <Label htmlFor="up-tag">Category</Label>
+                <Select
+                  value={upcomingForm.tag}
+                  onValueChange={(v) =>
+                    setUpcomingForm((f) => ({ ...f, tag: v }))
+                  }>
+                  <SelectTrigger id="up-tag">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[
+                      "Safari",
+                      "Beach",
+                      "Adventure",
+                      "Cultural",
+                      "Luxury",
+                      "Budget",
+                    ].map((t) => (
+                      <SelectItem key={t} value={t}>
+                        {t}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="up-launch">
+                  Launch Date
+                  <span className="ml-1 text-[10px] text-muted-foreground font-normal">
+                    (enables live countdown)
+                  </span>
+                </Label>
+                {/* Use date picker for exact date; falls back gracefully if left empty */}
+                <Input
+                  id="up-launch"
+                  type="date"
+                  value={
+                    // only show as date input value when it looks like ISO
+                    /^\d{4}-\d{2}-\d{2}$/.test(upcomingForm.launchDate)
+                      ? upcomingForm.launchDate
+                      : ""
+                  }
+                  min={new Date().toISOString().split("T")[0]}
+                  onChange={(e) =>
+                    setUpcomingForm((f) => ({
+                      ...f,
+                      launchDate: e.target.value, // stores as "YYYY-MM-DD"
+                    }))
+                  }
+                />
+              </div>
+            </div>
+
+            {/* ── Description ── */}
+            <div className="space-y-1.5">
+              <Label htmlFor="up-desc">Description</Label>
+              <Textarea
+                id="up-desc"
+                placeholder="A short teaser for travellers..."
+                rows={3}
+                value={upcomingForm.description}
+                onChange={(e) =>
+                  setUpcomingForm((f) => ({
+                    ...f,
+                    description: e.target.value,
+                  }))
+                }
+              />
+            </div>
+
+            {/* ── Pricing ── */}
+            <div className="rounded-lg border border-border p-4 space-y-4 bg-muted/30">
+              <div className="flex items-center justify-between">
+                <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                  Pricing
+                </p>
+                <span className="text-[10px] text-muted-foreground">
+                  Residents always pay less than international visitors
+                </span>
+              </div>
+
+              {/* Local & Foreigner prices */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <Label htmlFor="up-local-price">
+                    Resident Price <span className="text-destructive">*</span>{" "}
+                    <span className="text-muted-foreground font-normal text-xs">
+                      (KES)
+                    </span>
+                  </Label>
+                  <Input
+                    id="up-local-price"
+                    type="number"
+                    min={0}
+                    placeholder="e.g. 45,000"
+                    value={upcomingForm.localPrice ?? ""}
+                    onChange={(e) =>
+                      setUpcomingForm((f) => ({
+                        ...f,
+                        localPrice: e.target.value
+                          ? Number(e.target.value)
+                          : undefined,
+                      }))
+                    }
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="up-foreign-price">
+                    International Price{" "}
+                    <span className="text-destructive">*</span>{" "}
+                    <span className="text-muted-foreground font-normal text-xs">
+                      (USD)
+                    </span>
+                  </Label>
+                  <Input
+                    id="up-foreign-price"
+                    type="number"
+                    min={0}
+                    placeholder="e.g. 350"
+                    value={upcomingForm.foreignerPrice ?? ""}
+                    onChange={(e) =>
+                      setUpcomingForm((f) => ({
+                        ...f,
+                        foreignerPrice: e.target.value
+                          ? Number(e.target.value)
+                          : undefined,
+                      }))
+                    }
+                  />
+                </div>
+              </div>
+
+              {/* Discount & Offer */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <Label htmlFor="up-discount">
+                    Discount{" "}
+                    <span className="text-muted-foreground font-normal text-xs">
+                      (%)
+                    </span>
+                  </Label>
+                  <Input
+                    id="up-discount"
+                    type="number"
+                    min={0}
+                    max={100}
+                    placeholder="e.g. 15"
+                    value={upcomingForm.discountPercent ?? ""}
+                    onChange={(e) =>
+                      setUpcomingForm((f) => ({
+                        ...f,
+                        discountPercent: e.target.value
+                          ? Math.min(100, Number(e.target.value))
+                          : undefined,
+                      }))
+                    }
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="up-offer-label">Offer Label</Label>
+                  <Input
+                    id="up-offer-label"
+                    placeholder="e.g. Early Bird"
+                    value={upcomingForm.offerLabel ?? ""}
+                    onChange={(e) =>
+                      setUpcomingForm((f) => ({
+                        ...f,
+                        offerLabel: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
+              </div>
+
+              {/* Offer expiry */}
+              {(upcomingForm.discountPercent || upcomingForm.offerLabel) && (
+                <div className="space-y-1.5">
+                  <Label htmlFor="up-offer-expiry">
+                    Offer Expires{" "}
+                    <span className="text-muted-foreground font-normal text-xs">
+                      (optional)
+                    </span>
+                  </Label>
+                  <Input
+                    id="up-offer-expiry"
+                    type="date"
+                    min={new Date().toISOString().split("T")[0]}
+                    value={upcomingForm.offerExpiry ?? ""}
+                    onChange={(e) =>
+                      setUpcomingForm((f) => ({
+                        ...f,
+                        offerExpiry: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* ── Image URL ── */}
+            <div className="space-y-1.5">
+              <Label htmlFor="up-image">
+                Image URL{" "}
+                <span className="text-muted-foreground text-xs">
+                  (optional)
+                </span>
+              </Label>
+              <Input
+                id="up-image"
+                placeholder="https://..."
+                value={upcomingForm.imageUrl}
+                onChange={(e) =>
+                  setUpcomingForm((f) => ({ ...f, imageUrl: e.target.value }))
+                }
+              />
+              {upcomingForm.imageUrl && (
+                <div className="h-24 rounded-lg overflow-hidden border border-border mt-2">
+                  <img
+                    src={upcomingForm.imageUrl}
+                    alt="preview"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = "none";
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+
+          <DialogFooter className="shrink-0 pt-2 border-t border-border">
+            <Button
+              variant="outline"
+              onClick={() => setShowUpcomingForm(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleSaveUpcoming}>
+              {editingUpcoming ? "Save Changes" : "Add Destination"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* ── Upcoming: Delete Confirmation ── */}
+      <Dialog
+        open={!!deleteUpcomingTarget}
+        onOpenChange={(open) => !open && setDeleteUpcomingTarget(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Remove Upcoming Destination</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to remove{" "}
+              <span className="font-semibold">
+                {deleteUpcomingTarget?.name}
+              </span>{" "}
+              from the home page? This cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setDeleteUpcomingTarget(null)}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={handleDeleteUpcoming}>
+              Remove
             </Button>
           </DialogFooter>
         </DialogContent>
