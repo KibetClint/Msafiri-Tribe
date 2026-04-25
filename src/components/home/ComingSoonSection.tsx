@@ -118,9 +118,6 @@ const ComingSoonSection = () => {
                 </span>
               </h2>
             </div>
-            <p className="text-muted-foreground text-sm max-w-xs leading-relaxed md:text-right">
-              Be the first to know when these destinations open for booking.
-            </p>
           </div>
         </AnimatedSection>
 
