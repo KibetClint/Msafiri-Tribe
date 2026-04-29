@@ -72,11 +72,10 @@ const memberBenefits = [
   },
 ];
 
-// Each tier: multiplier on the base package price so we don't duplicate data
 const tiers = [
   {
-    key: "basic" as const,
-    label: "Basic",
+    key: "standard" as const,
+    label: "Standard",
     multiplier: 1.0,
     color: "bg-muted text-muted-foreground",
     active: "bg-primary text-primary-foreground",
@@ -296,8 +295,8 @@ const CustomTravels = () => {
 
   const [selectedDest, setSelectedDest] = useState("");
   const [selectedTier, setSelectedTier] = useState<
-    "basic" | "silver" | "premium" | "family"
-  >("basic");
+    "standard" | "silver" | "premium" | "family"
+  >("standard");
   const [selectedPlan, setSelectedPlan] = useState(6);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -309,10 +308,8 @@ const CustomTravels = () => {
   const tierInfo = tiers.find((t) => t.key === selectedTier)!;
   const plan = installmentPlans.find((p) => p.months === selectedPlan)!;
 
-  // Family tier uses premium base price × family multiplier (covers ~2 adults + 2 kids)
-  const basePriceUSD = dest
-    ? Math.round(dest.packages.basic.price * tierInfo.multiplier)
-    : 0;
+  // Use dest.price (flat structure) × tier multiplier
+  const basePriceUSD = dest ? Math.round(dest.price * tierInfo.multiplier) : 0;
   const totalPriceUSD = dest
     ? Math.round(basePriceUSD * (1 - plan.discount / 100))
     : 0;
@@ -473,7 +470,6 @@ const CustomTravels = () => {
               {tierInfo.itinerary.map((item, i) => (
                 <AnimatedSection key={item.day} delay={i * 80}>
                   <div className="flex gap-5 items-start">
-                    {/* icon bubble */}
                     <div className="relative z-10 w-14 h-14 rounded-full bg-primary/10 border-2 border-primary/20 flex flex-col items-center justify-center flex-shrink-0">
                       <item.icon size={18} className="text-primary" />
                       <span className="text-[9px] font-bold text-primary leading-none mt-0.5">

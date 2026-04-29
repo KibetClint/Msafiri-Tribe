@@ -4,7 +4,6 @@ import AnimatedSection from "@/components/AnimatedSection";
 import { destinations } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Accordion,
   AccordionContent,
@@ -16,27 +15,15 @@ import {
   Clock,
   Star,
   CheckCircle,
+  XCircle,
   ArrowLeft,
   Utensils,
   Hotel,
   Globe,
+  Route,
 } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import { useCurrencyContext } from "@/context/CurrencyContext";
-
-const tierColors = {
-  basic: "border-muted-foreground/30",
-  silver: "border-muted-foreground/50",
-  premium: "border-secondary",
-};
-
-const tierLabels = { basic: "Basic", silver: "Silver", premium: "Premium" };
-
-const tierBadgeColors = {
-  basic: "bg-muted text-muted-foreground",
-  silver: "bg-muted-foreground/20 text-foreground",
-  premium: "bg-secondary text-secondary-foreground",
-};
 
 const DestinationDetail = () => {
   const { formatPrice, loading: currencyLoading } = useCurrencyContext();
@@ -58,7 +45,6 @@ const DestinationDetail = () => {
     return () => clearInterval(timer);
   }, [dest, paused, nextImage]);
 
-  // Related destinations (same country or category)
   const related = destinations
     .filter(
       (d) =>
@@ -103,7 +89,7 @@ const DestinationDetail = () => {
             </span>
             <span className="flex items-center gap-2">
               <Clock size={18} className="text-safari-green-light" />
-              {dest.packages.basic.duration}
+              {dest.duration}
             </span>
             <span className="flex items-center gap-2">
               <Globe size={18} className="text-safari-green-light" />
@@ -122,7 +108,7 @@ const DestinationDetail = () => {
         </Link>
       </div>
 
-      {/* Overview with tabs like Azani */}
+      {/* Overview */}
       <section className="py-12">
         <div className="container">
           <AnimatedSection>
@@ -211,7 +197,11 @@ const DestinationDetail = () => {
                     <button
                       key={i}
                       onClick={() => setSelectedImage(i)}
-                      className={`w-2.5 h-2.5 rounded-full transition-all ${i === selectedImage ? "bg-background scale-125" : "bg-background/50 hover:bg-background/80"}`}
+                      className={`w-2.5 h-2.5 rounded-full transition-all ${
+                        i === selectedImage
+                          ? "bg-background scale-125"
+                          : "bg-background/50 hover:bg-background/80"
+                      }`}
                       aria-label={`View image ${i + 1}`}
                     />
                   ))}
@@ -222,185 +212,159 @@ const DestinationDetail = () => {
         </div>
       </section>
 
-      {/* Packages - Azani-style with detailed itinerary */}
+      {/* Package Details + Itinerary */}
       <section className="py-16 bg-safari-cream">
         <div className="container">
           <AnimatedSection>
             <h2 className="font-display text-3xl md:text-4xl font-bold text-center mb-4">
-              Safari Packages
+              Tour Overview
             </h2>
             <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-              Choose the experience that suits your style — from budget-friendly
-              to ultimate luxury.
+              Everything included in this experience — day by day.
             </p>
           </AnimatedSection>
 
           <AnimatedSection delay={100}>
-            <Tabs defaultValue="basic" className="w-full">
-              <TabsList className="grid w-full max-w-md mx-auto grid-cols-3 mb-10">
-                <TabsTrigger value="basic">Basic</TabsTrigger>
-                <TabsTrigger value="silver">Silver</TabsTrigger>
-                <TabsTrigger value="premium">Premium</TabsTrigger>
-              </TabsList>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Package Summary Card */}
+              <Card className="border-2 border-secondary lg:col-span-1 h-fit sticky top-6">
+                <CardContent className="p-8">
+                  <p className="text-3xl font-bold text-safari-warm mb-1">
+                    From{" "}
+                    {currencyLoading
+                      ? `$${dest.price}`
+                      : formatPrice(dest.price)}
+                  </p>
+                  <p className="text-sm text-muted-foreground mb-6">
+                    per person
+                  </p>
 
-              {(["basic", "silver", "premium"] as const).map((tier) => {
-                const pkg = dest.packages[tier];
-                return (
-                  <TabsContent key={tier} value={tier}>
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                      {/* Package Summary Card */}
-                      <Card
-                        className={`border-2 ${tierColors[tier]} lg:col-span-1`}>
-                        <CardContent className="p-8">
-                          <span
-                            className={`inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4 ${tierBadgeColors[tier]}`}>
-                            {tierLabels[tier]}
-                          </span>
-                          <h3 className="font-display text-2xl font-bold mb-2">
-                            {pkg.name}
-                          </h3>
-                          <p className="text-3xl font-bold text-safari-warm mb-1">
-                            From{" "}
-                            {currencyLoading
-                              ? `$${pkg.price}`
-                              : formatPrice(pkg.price)}
-                          </p>
-                          <p className="text-sm text-muted-foreground mb-6">
-                            per person
-                          </p>
-                          <div className="space-y-3 mb-6">
-                            <div className="flex items-center gap-2 text-sm">
-                              <Clock
-                                size={14}
-                                className="text-muted-foreground"
-                              />
-                              {pkg.duration}
-                            </div>
-                            <div className="flex items-center gap-2 text-sm">
-                              <Hotel
-                                size={14}
-                                className="text-muted-foreground"
-                              />
-                              {pkg.accommodation}
-                            </div>
-                            <div className="flex items-center gap-2 text-sm">
-                              <Utensils
-                                size={14}
-                                className="text-muted-foreground"
-                              />
-                              {pkg.mealBasis}
-                            </div>
-                          </div>
-                          <h4 className="font-semibold mb-3">
-                            What's Included
-                          </h4>
-                          <ul className="space-y-2 mb-6">
-                            {pkg.includes.map((item) => (
-                              <li
-                                key={item}
-                                className="flex items-start gap-2 text-sm">
-                                <CheckCircle
-                                  size={14}
-                                  className="text-primary mt-0.5 flex-shrink-0"
-                                />
-                                {item}
-                              </li>
-                            ))}
-                          </ul>
-                          <Link to="/book">
-                            <Button className="w-full bg-primary text-primary-foreground hover:bg-safari-green-light">
-                              Book Now
-                            </Button>
-                          </Link>
-                        </CardContent>
-                      </Card>
-
-                      {/* Detailed Day-by-Day Itinerary (Azani style) */}
-                      <div className="lg:col-span-2">
-                        <h3 className="font-display text-xl font-bold mb-2">
-                          Tour Plan
-                        </h3>
-                        <p className="text-sm text-muted-foreground mb-6">
-                          Detailed day-by-day itinerary
-                        </p>
-
-                        <Accordion
-                          type="single"
-                          collapsible
-                          className="space-y-3">
-                          {pkg.itinerary.map((day) => (
-                            <AccordionItem
-                              key={day.day}
-                              value={`day-${day.day}`}
-                              className="border rounded-lg bg-background overflow-hidden">
-                              <AccordionTrigger className="px-5 py-4 hover:no-underline hover:bg-muted/50">
-                                <div className="flex items-center gap-4 text-left">
-                                  <div className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm flex-shrink-0">
-                                    Day {day.day}
-                                  </div>
-                                  <div>
-                                    <h4 className="font-display font-semibold">
-                                      {day.title}
-                                    </h4>
-                                    {day.destination && (
-                                      <span className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
-                                        <MapPin size={10} /> {day.destination}
-                                      </span>
-                                    )}
-                                  </div>
-                                </div>
-                              </AccordionTrigger>
-                              <AccordionContent className="px-5 pb-5">
-                                <div className="pl-16 space-y-3">
-                                  {day.destination && (
-                                    <div className="flex items-center gap-2 text-sm">
-                                      <MapPin
-                                        size={14}
-                                        className="text-primary"
-                                      />
-                                      <strong>Destination:</strong>{" "}
-                                      {day.destination}
-                                    </div>
-                                  )}
-                                  {day.mealBasis && (
-                                    <div className="flex items-center gap-2 text-sm">
-                                      <Utensils
-                                        size={14}
-                                        className="text-primary"
-                                      />
-                                      <strong>Basis:</strong> {day.mealBasis}
-                                    </div>
-                                  )}
-                                  <p className="text-sm text-muted-foreground leading-relaxed">
-                                    {day.description}
-                                  </p>
-                                  {day.accommodation && (
-                                    <div className="mt-3 p-4 bg-safari-cream rounded-lg">
-                                      <div className="flex items-center gap-2 text-sm font-semibold mb-1">
-                                        <Hotel
-                                          size={14}
-                                          className="text-primary"
-                                        />
-                                        Overnight: {day.accommodation}
-                                      </div>
-                                      {day.accommodationDescription && (
-                                        <p className="text-xs text-muted-foreground">
-                                          {day.accommodationDescription}
-                                        </p>
-                                      )}
-                                    </div>
-                                  )}
-                                </div>
-                              </AccordionContent>
-                            </AccordionItem>
-                          ))}
-                        </Accordion>
-                      </div>
+                  <div className="space-y-3 mb-6">
+                    <div className="flex items-center gap-2 text-sm">
+                      <Clock size={14} className="text-muted-foreground" />
+                      {dest.duration}
                     </div>
-                  </TabsContent>
-                );
-              })}
-            </Tabs>
+                    <div className="flex items-center gap-2 text-sm">
+                      <Hotel size={14} className="text-muted-foreground" />
+                      {dest.accommodation}
+                    </div>
+                    <div className="flex items-center gap-2 text-sm">
+                      <Utensils size={14} className="text-muted-foreground" />
+                      {dest.mealBasis}
+                    </div>
+                  </div>
+
+                  <h4 className="font-semibold mb-3">What's Included</h4>
+                  <ul className="space-y-2 mb-6">
+                    {dest.includes.map((item) => (
+                      <li key={item} className="flex items-start gap-2 text-sm">
+                        <CheckCircle
+                          size={14}
+                          className="text-primary mt-0.5 flex-shrink-0"
+                        />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <h4 className="font-semibold mb-3">Excludes</h4>
+                  <ul className="space-y-2 mb-8">
+                    {dest.excludes.map((item) => (
+                      <li
+                        key={item}
+                        className="flex items-start gap-2 text-sm text-muted-foreground">
+                        <XCircle
+                          size={14}
+                          className="text-destructive mt-0.5 flex-shrink-0"
+                        />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <Link to="/book">
+                    <Button className="w-full bg-primary text-primary-foreground hover:bg-safari-green-light">
+                      Book Now
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+
+              {/* Day-by-Day Itinerary */}
+              <div className="lg:col-span-2">
+                <h3 className="font-display text-xl font-bold mb-2">
+                  Tour Plan
+                </h3>
+                <p className="text-sm text-muted-foreground mb-6">
+                  Detailed day-by-day itinerary
+                </p>
+
+                <Accordion type="single" collapsible className="space-y-3">
+                  {dest.itinerary.map((day, index) => (
+                    <AccordionItem
+                      key={index}
+                      value={`day-${index}`}
+                      className="border rounded-lg bg-background overflow-hidden">
+                      <AccordionTrigger className="px-5 py-4 hover:no-underline hover:bg-muted/50">
+                        <div className="flex items-center gap-4 text-left">
+                          <div className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm flex-shrink-0">
+                            Day {day.day}
+                          </div>
+                          <div>
+                            <h4 className="font-display font-semibold">
+                              {day.title}
+                            </h4>
+                            <span className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
+                              <Route size={10} /> {day.route}
+                            </span>
+                          </div>
+                        </div>
+                      </AccordionTrigger>
+                      <AccordionContent className="px-5 pb-5">
+                        <div className="pl-16 space-y-3">
+                          {/* Route */}
+                          <div className="flex items-start gap-2 text-sm">
+                            <Route
+                              size={14}
+                              className="text-primary mt-0.5 flex-shrink-0"
+                            />
+                            <span className="font-semibold uppercase tracking-wide text-xs text-primary">
+                              {day.route}
+                            </span>
+                          </div>
+
+                          {/* Meal Plan */}
+                          <div className="flex items-center gap-2 text-sm">
+                            <Utensils
+                              size={14}
+                              className="text-primary flex-shrink-0"
+                            />
+                            <span>
+                              <strong>Meals:</strong> {day.mealPlan}
+                            </span>
+                          </div>
+
+                          {/* Description */}
+                          <p className="text-sm text-muted-foreground leading-relaxed">
+                            {day.description}
+                          </p>
+
+                          {/* Overnight accommodation */}
+                          {day.accommodation && (
+                            <div className="mt-3 p-4 bg-safari-cream rounded-lg">
+                              <div className="flex items-center gap-2 text-sm font-semibold">
+                                <Hotel size={14} className="text-primary" />
+                                Overnight: {day.accommodation}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </div>
+            </div>
           </AnimatedSection>
         </div>
       </section>
@@ -432,13 +396,13 @@ const DestinationDetail = () => {
                           {r.name}
                         </h3>
                         <p className="text-sm text-muted-foreground mb-2">
-                          {r.packages.basic.duration}
+                          {r.duration}
                         </p>
                         <span className="text-lg font-bold text-safari-warm">
                           From{" "}
                           {currencyLoading
-                            ? `$${r.packages.basic.price}`
-                            : formatPrice(r.packages.basic.price)}
+                            ? `$${r.price}`
+                            : formatPrice(r.price)}
                         </span>
                       </CardContent>
                     </Card>
@@ -458,15 +422,14 @@ const DestinationDetail = () => {
               Ready to Explore {dest.name.split(",")[0]}?
             </h2>
             <p className="text-primary-foreground/70 mb-8 max-w-xl mx-auto">
-              Contact us for a customized itinerary or book one of our packages
-              today.
+              Contact us for a customized itinerary or book this package today.
             </p>
             <div className="flex gap-4 justify-center flex-wrap">
               <Link to="/book">
                 <Button
                   size="lg"
                   className="bg-primary text-primary-foreground hover:bg-safari-green-light">
-                  Book a Safari
+                  Book Now
                 </Button>
               </Link>
               <Link to="/contact">

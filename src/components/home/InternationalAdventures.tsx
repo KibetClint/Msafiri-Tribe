@@ -54,7 +54,7 @@ const InternationalAdventures = () => {
                           Starting from
                         </p>
                         <p className="text-2xl font-black text-safari-warm">
-                          {currencyLoading ? `$${d.packages.basic.price}` : formatPrice(d.packages.basic.price)}
+                          {currencyLoading ? `$${d.price}` : formatPrice(d.price)}
                         </p>
                       </div>
                       <div className="w-10 h-10 rounded-full bg-safari-cream border border-border flex items-center justify-center group-hover:bg-safari-green group-hover:border-safari-green group-hover:text-white transition-all duration-300">

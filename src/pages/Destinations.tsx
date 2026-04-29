@@ -55,7 +55,8 @@ const Destinations = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showFilters, setShowFilters] = useState(false);
 
-  const allPrices = destinations.map((d) => d.packages.basic.price);
+  // Use flat dest.price for price range
+  const allPrices = destinations.map((d) => d.price);
   const minPrice = Math.min(...allPrices);
   const maxPrice = Math.max(...allPrices);
   const [priceRange, setPriceRange] = useState<[number, number]>([
@@ -88,9 +89,8 @@ const Destinations = () => {
         !searchQuery ||
         d.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         d.description.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchPrice =
-        d.packages.basic.price >= priceRange[0] &&
-        d.packages.basic.price <= priceRange[1];
+      // Use flat dest.price for filtering
+      const matchPrice = d.price >= priceRange[0] && d.price <= priceRange[1];
       const matchTripType =
         !tripTypeParam || d.tripTypes.includes(tripTypeParam);
       return matchCategory && matchSearch && matchPrice && matchTripType;
@@ -236,9 +236,10 @@ const Destinations = () => {
                     </p>
                     <div className="flex items-center justify-between mb-4">
                       <span className="text-lg font-bold text-safari-warm">
+                        {/* Use flat dest.price */}
                         {currencyLoading
-                          ? `From $${d.packages.basic.price}`
-                          : `From ${formatPrice(d.packages.basic.price)}`}
+                          ? `From $${d.price}`
+                          : `From ${formatPrice(d.price)}`}
                       </span>
                       <span className="flex items-center gap-1 text-xs text-muted-foreground">
                         <MapPin size={12} />

@@ -57,8 +57,8 @@ const FeaturedDestinations = () => {
                         From{" "}
                         <span className="text-safari-warm font-bold text-sm">
                           {currencyLoading
-                            ? `$${d.packages.basic.price}`
-                            : formatPrice(d.packages.basic.price)}
+                            ? `$${d.price}`
+                            : formatPrice(d.price)}
                         </span>
                       </p>
                       <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center group-hover:bg-safari-warm transition-colors duration-300">
